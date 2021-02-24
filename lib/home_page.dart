@@ -10,16 +10,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 2.0)),
-    child: new Icon(
-      Icons.person,
-      color: Colors.amber,
+  static Widget _eventIcon = Padding(
+    padding: EdgeInsets.only(top: 20, left:10,right:10),
+    child: Container(
+    height: 2,
+    width: 2,
+    alignment: Alignment.bottomCenter,
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.all(Radius.circular(1000)),
+      border: Border.all(color: Colors.blue, width: 1),
     ),
-  );
+  ));
   DateTime _currentDate = DateTime.now();
 
   EventList<Event> _markedDateMap = new EventList<Event>(
@@ -45,13 +47,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    _markedDateMap.add(
-        new DateTime(2021, 2, 27),
-        new Event(
-          date: new DateTime(2021, 2, 27),
-          title: 'La entrega fallada :\'v',
-          icon: Icon(Icons.favorite),
-        ));
+    // _markedDateMap.add(
+    //     new DateTime(2021, 2, 27),
+    //     new Event(
+    //       date: new DateTime(2021, 2, 27),
+    //       title: 'La entrega fallada :\'v',
+    //       icon: Icon(Icons.favorite),
+    //     ));
     super.initState();
   }
 
@@ -63,10 +65,8 @@ class _HomePageState extends State<HomePage> {
         this.setState(() => _currentDate = date);
         events.forEach((event) => print(event.title));
       },
-      weekendTextStyle: TextStyle(
-        color: Colors.red,
-      ),
-      thisMonthDayBorderColor: Colors.grey,
+      weekdayTextStyle: TextStyle(color: Color(0xff99A0A6)),
+      thisMonthDayBorderColor: Colors.white60,
 //          weekDays: null, /// for pass null when you do not want to render weekDays
       markedDatesMap: _markedDateMap,
       height: 400.0,
@@ -75,32 +75,37 @@ class _HomePageState extends State<HomePage> {
       customGridViewPhysics: NeverScrollableScrollPhysics(),
       markedDateShowIcon: true,
       markedDateIconMaxShown: 2,
-      selectedDayTextStyle: TextStyle(
-        color: Colors.yellow,
-      ),
-      todayTextStyle: TextStyle(
-        color: Colors.blue,
-      ),
+      selectedDayTextStyle: TextStyle(color: Colors.yellow),
+      todayTextStyle: TextStyle(color: Colors.black),
       markedDateIconBuilder: (event) {
         return event.icon;
       },
       // minSelectedDate: _currentDate.subtract(Duration(days: 360)),
       // maxSelectedDate: _currentDate.add(Duration(days: 360)),
       onDayLongPressed: (day) {},
-      todayButtonColor: Colors.transparent,
-      todayBorderColor: Colors.green,
+      todayButtonColor: Color(0xff3770D3),
+      todayBorderColor: Color(0xff3770D3),
+      prevDaysTextStyle: TextStyle(color: Color(0xff37383D)),
+      nextDaysTextStyle: TextStyle(color: Color(0xff37383D)),
+      daysTextStyle: TextStyle(color: Colors.white),
+      weekendTextStyle: TextStyle(color: Color(0xffA9AAAD)),
+      headerTextStyle: TextStyle(color: Colors.white, fontSize: 20.0),
+      iconColor: Colors.white,
+      daysHaveCircularBorder: false,
       markedDateMoreShowTotal:
           true, // null for not showing hidden events indicator
 //          markedDateIconMargin: 9,
 //          markedDateIconOffset: 3,
     );
     return Scaffold(
+      backgroundColor: Color(0xff303135),
       appBar: AppBar(
-        title: Text("Cosa"),
+        title: Text("Calendario"),
       ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16.0),
+          color: Color(0xff303135),
           child: _calendarCarousel,
         ),
       ),
