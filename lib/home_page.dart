@@ -125,6 +125,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       backgroundColor: Color(0xff1F2125),
       appBar: AppBar(
         title: Text("Calendario"),
+        backgroundColor: Color(0xff212D40),
       ),
       body: Column(
         children: [
