@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff303135),
+      backgroundColor: Color(0xff1F2125),
       appBar: AppBar(
         title: Text("Calendario"),
       ),
@@ -155,6 +155,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget _buildTableCalendarWithBuilders() {
     return TableCalendar(
+      locale: "es_MX",
       calendarController: _calendarController,
       events: _events,
       holidays: _holidays,
@@ -164,17 +165,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       availableGestures: AvailableGestures.all,
       availableCalendarFormats: const {
         CalendarFormat.month: '',
-        CalendarFormat.week: '',
       },
       calendarStyle: CalendarStyle(
         outsideDaysVisible: false,
-        weekendStyle: TextStyle().copyWith(color: Colors.blue[800]),
-        holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
+        outsideStyle: TextStyle(color: Color(0xff37383D)),
+        outsideWeekendStyle: TextStyle(
+          color: Color(0xff37383D),
+        ),
+        weekendStyle: TextStyle(color: Color(0xffA9AAAD)),
+        weekdayStyle: TextStyle(color: Colors.white),
+        eventDayStyle: TextStyle(color: Colors.white),
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekendStyle: TextStyle().copyWith(color: Colors.blue[600]),
+        weekendStyle: TextStyle(color: Color(0xff65696D)),
+        weekdayStyle: TextStyle(color: Color(0xff99A0A6)),
       ),
       headerStyle: HeaderStyle(
+        titleTextStyle: TextStyle(color: Colors.white,fontSize: 22.69),
+        leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
+        rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
         centerHeaderTitle: true,
         formatButtonVisible: false,
       ),
@@ -185,12 +194,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Container(
               margin: const EdgeInsets.all(4.0),
               padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-              color: Colors.deepOrange[300],
+              color: Color(0xff353841),
               width: 100,
               height: 100,
               child: Text(
                 '${date.day}',
-                style: TextStyle().copyWith(fontSize: 16.0),
+                style:
+                    TextStyle().copyWith(fontSize: 16.0, color: Colors.white),
               ),
             ),
           );
@@ -199,7 +209,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            color: Colors.amber[400],
+            color: Color(0xff8BB4F8),
             width: 100,
             height: 100,
             child: Text(
@@ -249,10 +259,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         color: _calendarController.isSelected(date)
-            ? Colors.brown[500]
+            ? Color(0xff5DB5C1)
             : _calendarController.isToday(date)
-                ? Colors.brown[300]
-                : Colors.blue[400],
+                ? Color(0xff5DB5C1)
+                : Color(0xff5DB5C1),
       ),
       width: 16.0,
       height: 16.0,
@@ -277,21 +287,36 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildEventList() {
-    return ListView(
-      children: _selectedEvents
-          .map((event) => Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.8),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
-              ))
-          .toList(),
+    List<Widget> list = _selectedEvents
+        .map((event) => Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 0.8),
+                color: Color(0xff5DB5C1),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: ListTile(
+                title: Text(event
+                    .toString()), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
+                onTap: () => print("presionado"),//Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día 
+              ),
+            ))
+        .toList();
+    list.add(
+      Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.8),
+          color: Color(0xff5DB5C1),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: ListTile(
+          title: Text("+ Agregar evento"), 
+          onTap: () => Navigator.of(context).pushNamed("/addEvent"), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
+        ),
+      ),
     );
+    return ListView(children: list);
   }
 }
