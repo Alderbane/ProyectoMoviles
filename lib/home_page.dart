@@ -1,3 +1,4 @@
+import 'package:calendario/menu.dart';
 import 'package:calendario/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -135,6 +136,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Expanded(child: _buildEventList()),
         ],
         mainAxisSize: MainAxisSize.max,
+      ),
+      drawer: Drawer(
+        child: Menu(),
       ),
     );
   }
