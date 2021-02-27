@@ -1,6 +1,7 @@
 import 'package:calendario/add_event.dart';
 import 'package:calendario/event_page.dart';
 import 'package:calendario/home_page.dart';
+import 'package:calendario/splash2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -13,8 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'School Calendar',
-      initialRoute: '/',
+      initialRoute: '/splash',
       routes: {
+        "/splash": (context) => Splash2(),
         "/": (context) => HomePage(),
         "/addEvent": (context) => AddEvent(),
         "/eventPage": (context) => EventPage(),
