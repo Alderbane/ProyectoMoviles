@@ -19,13 +19,14 @@ class _EventPageState extends State<EventPage> {
   var _descController = TextEditingController();
   Evento event;
   TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 0);
+  bool _isAllDay;
 
   @override
   Widget build(BuildContext context) {
     event = ModalRoute.of(context).settings.arguments;
     _titleController.text = event.titulo;
     _descController.text = event.descripcion;
-
+    _isAllDay = event.isAllDay();
     // TimeOfDay(hour:int.parse(event.hora.split(":")[0]),minute: int.parse(event.hora.split(":")[1]));
     return Scaffold(
       appBar: AppBar(
@@ -74,6 +75,25 @@ class _EventPageState extends State<EventPage> {
                   borderSide: BorderSide(color: Colors.grey[500]),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 35),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text("Todo el día",
+                      style: TextStyle(color: Colors.grey[600])),
+                  Switch(
+                    value: _isAllDay,
+                    onChanged: (value) {
+                      setState(() {
+                        _isAllDay = value;
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             Row(
