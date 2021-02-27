@@ -31,6 +31,7 @@ class _EventPageState extends State<EventPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Editar Evento"),
+        backgroundColor: Color(0xff212D40),
         actions: [
           IconButton(
               icon: Icon(Icons.save),
