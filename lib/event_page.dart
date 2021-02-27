@@ -5,9 +5,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 void main() =>
-    initializeDateFormatting('esMX', null).then(() => runApp(EventPage()));
+    initializeDateFormatting('esMX', null).then((_) => runApp(EventPage()));
 
-class EventPage extends StatefulWidget {D
+class EventPage extends StatefulWidget {
   EventPage({Key key}) : super(key: key);
 
   @override
