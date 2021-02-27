@@ -10,4 +10,8 @@ class Evento {
     this.descripcion,
     this.hora,
   }) {}
+
+  bool isAllDay() {
+    return this.hora == "Todo el día";
+  }
 }
