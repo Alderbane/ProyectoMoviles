@@ -11,7 +11,10 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  String dateTime;
+
   DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
   @override
   Widget build(BuildContext context) {
@@ -87,27 +90,37 @@ class _AddEventState extends State<AddEvent> {
                 ),
                 Row(
                   children: [
-                    GestureDetector(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
-                        child: Text('${new DateFormat.yMMMMEEEEd('es').format(selectedDate)}',
-                          style: TextStyle(color: Colors.grey[500]),
+                    Expanded(
+                      flex:3,
+                      child: GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 20),
+                          child: Text(
+                            '${new DateFormat.yMMMMEEEEd('es').format(selectedDate)}',
+                            style: TextStyle(color: Colors.grey[500]),
+                          ),
                         ),
+                        onTap: () {
+                          _selectDate(context);
+                        },
                       ),
-                      onTap: () {
-                        _selectDate(context);
-                      },
                     ),
-                    GestureDetector(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
-                        child: Text('${new DateFormat.yMMMMEEEEd('es').format(selectedDate)}',
-                          style: TextStyle(color: Colors.grey[500]),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 20),
+                          child: Text(
+                            '${selectedTime.format(context)}',
+                            style: TextStyle(color: Colors.grey[500]),
+                          ),
                         ),
+                        onTap: () {
+                          _selectTime(context);
+                        },
                       ),
-                      onTap: () {
-                        _selectTime(context);
-                      },
                     ),
                   ],
                 )
@@ -139,19 +152,19 @@ class _AddEventState extends State<AddEvent> {
   }
 
   _selectTime(BuildContext context) async {
-  final TimeOfDay picked = await showTimePicker(
-    context: context,
-    initialTime: selectedTime,
-  );
-  if (picked != null)
-    setState(() {
-      selectedTime = picked;
-      _hour = selectedTime.hour.toString();
-      _minute = selectedTime.minute.toString();
-      _time = _hour + ' : ' + _minute;
-      _timeController.text = _time;
-      _timeController.text = formatDate(
-          DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-          [hh, ':', nn, " ", am]).toString();
-    });}
+    final TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+    if (picked != null)
+      setState(() {
+        selectedTime = picked;
+      });
+  }
 }
