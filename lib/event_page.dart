@@ -44,7 +44,7 @@ class _EventPageState extends State<EventPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            rTextField(
+            TextField(
               controller: _titleController,
               style: TextStyle(fontSize: 25, color: Colors.grey[500]),
               cursorColor: Colors.grey[500],
