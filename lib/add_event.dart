@@ -16,6 +16,8 @@ class _AddEventState extends State<AddEvent> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
+  bool _isAllDay = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -88,10 +90,28 @@ class _AddEventState extends State<AddEvent> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 35),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("Todo el día", style: TextStyle(color: Colors.grey[600])),
+                      Switch(
+                        value: _isAllDay,
+                        onChanged: (value){
+                          setState(() {
+                            _isAllDay = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(
-                      flex:3,
+                      flex: 3,
                       child: GestureDetector(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -112,13 +132,13 @@ class _AddEventState extends State<AddEvent> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 20),
-                          child: Text(
+                          child: Text(_isAllDay?'':
                             '${selectedTime.format(context)}',
                             style: TextStyle(color: Colors.grey[500]),
                           ),
                         ),
                         onTap: () {
-                          _selectTime(context);
+                          if(!_isAllDay)_selectTime(context);
                         },
                       ),
                     ),
