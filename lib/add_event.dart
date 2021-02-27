@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
-void main() => runApp(AddEvent());
+void main() =>
+    initializeDateFormatting('es_MX', null).then((_) => runApp(AddEvent()));
 
-class AddEvent extends StatelessWidget {
+class AddEvent extends StatefulWidget {
+  @override
+  _AddEventState createState() => _AddEventState();
+}
+
+class _AddEventState extends State<AddEvent> {
+  DateTime selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,25 +22,38 @@ class AddEvent extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.cancel, color: Colors.grey[500]),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      width: 260,
-                    ),
-                    MaterialButton(
-                      child: Text("Guardar",
-                          style: TextStyle(color: Colors.white)),
-                      color: Color(0xff5DB5C1),
-                      onPressed: () {},
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Row(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 10,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.cancel, color: Colors.grey[500]),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: MaterialButton(
+                          child: Text("Guardar",
+                              style: TextStyle(color: Colors.white)),
+                          color: Color(0xff5DB5C1),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 TextField(
                   style: TextStyle(fontSize: 25, color: Colors.grey[500]),
@@ -44,7 +67,7 @@ class AddEvent extends StatelessWidget {
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey[500]),
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal:35),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 35),
                   ),
                 ),
                 TextField(
@@ -59,12 +82,76 @@ class AddEvent extends StatelessWidget {
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey[500]),
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal:35),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 35),
                   ),
                 ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
+                        child: Text('${new DateFormat.yMMMMEEEEd('es').format(selectedDate)}',
+                          style: TextStyle(color: Colors.grey[500]),
+                        ),
+                      ),
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                    ),
+                    GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
+                        child: Text('${new DateFormat.yMMMMEEEEd('es').format(selectedDate)}',
+                          style: TextStyle(color: Colors.grey[500]),
+                        ),
+                      ),
+                      onTap: () {
+                        _selectTime(context);
+                      },
+                    ),
+                  ],
+                )
               ],
             ),
           )),
     );
   }
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      currentDate: selectedDate,
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        print(picked);
+        selectedDate = picked;
+      });
+  }
+
+  _selectTime(BuildContext context) async {
+  final TimeOfDay picked = await showTimePicker(
+    context: context,
+    initialTime: selectedTime,
+  );
+  if (picked != null)
+    setState(() {
+      selectedTime = picked;
+      _hour = selectedTime.hour.toString();
+      _minute = selectedTime.minute.toString();
+      _time = _hour + ' : ' + _minute;
+      _timeController.text = _time;
+      _timeController.text = formatDate(
+          DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+          [hh, ':', nn, " ", am]).toString();
+    });}
 }
