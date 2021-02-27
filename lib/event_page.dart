@@ -1,6 +1,13 @@
+import 'package:calendario/models/event_model.dart';
 import 'package:flutter/material.dart';
 
-class EventPage extends StatefulWidget {
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+
+void main() =>
+    initializeDateFormatting('esMX', null).then(() => runApp(EventPage()));
+
+class EventPage extends StatefulWidget {D
   EventPage({Key key}) : super(key: key);
 
   @override
@@ -10,8 +17,27 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("s"),
+    final Evento event = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("${event.titulo}"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: Column(
+          children: [
+            Text("Descripcion"),
+            Text("${event.descripcion}"),
+            Text("Fecha"),
+            Text(
+              '${new DateFormat.yMMMMEEEEd('es').format(event.fecha)}',
+              style: TextStyle(color: Colors.grey[500]),
+            ),
+            Text("Hora"),
+            Text("${event.hora}"),
+          ],
+        ),
+      ),
     );
   }
 }

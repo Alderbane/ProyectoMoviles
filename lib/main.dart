@@ -1,4 +1,5 @@
 import 'package:calendario/add_event.dart';
+import 'package:calendario/event_page.dart';
 import 'package:calendario/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -6,7 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
 }
- 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/": (context) => HomePage(),
         "/addEvent": (context) => AddEvent(),
+        "/eventPage": (context) => EventPage(),
       },
     );
   }
