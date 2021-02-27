@@ -1,3 +1,4 @@
+import 'package:calendario/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -181,7 +182,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         weekdayStyle: TextStyle(color: Color(0xff99A0A6)),
       ),
       headerStyle: HeaderStyle(
-        titleTextStyle: TextStyle(color: Colors.white,fontSize: 22.69),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 22.69),
         leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
         rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
         centerHeaderTitle: true,
@@ -299,7 +300,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               child: ListTile(
                 title: Text(event
                     .toString()), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
-                onTap: () => print("presionado"),//Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día 
+                onTap: () {
+                  Evento e = Evento(
+                    titulo: "Entrega 1",
+                    descripcion: "Primera entrega de web",
+                    fecha: DateTime(2021, 02, 26),
+                    hora: "Todo el dia",
+                  );
+                  Navigator.of(context).pushNamed("/eventPage", arguments: e);
+                }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
               ),
             ))
         .toList();
@@ -312,8 +321,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
-          title: Text("+ Agregar evento"), 
-          onTap: () => Navigator.of(context).pushNamed("/addEvent"), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
+          title: Text("+ Agregar evento"),
+          onTap: () => Navigator.of(context).pushNamed(
+              "/addEvent"), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
         ),
       ),
     );

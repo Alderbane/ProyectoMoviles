@@ -24,18 +24,19 @@ class _EventPageState extends State<EventPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 30),
-        child: Column(
-          children: [
-            Text("Descripcion"),
-            Text("${event.descripcion}"),
-            Text("Fecha"),
-            Text(
-              '${new DateFormat.yMMMMEEEEd('es').format(event.fecha)}',
-              style: TextStyle(color: Colors.grey[500]),
-            ),
-            Text("Hora"),
-            Text("${event.hora}"),
-          ],
+        child: Center(
+          child: Column(
+            children: [
+              Text("Descripcion:"),
+              Text("${event.descripcion}"),
+              Text("Fecha:"),
+              Text(
+                '${new DateFormat.yMMMMEEEEd('es').format(event.fecha)}',
+              ),
+              Text("Hora:"),
+              Text("${event.hora}"),
+            ],
+          ),
         ),
       ),
     );
