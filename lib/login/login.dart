@@ -23,12 +23,8 @@ class Login extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 100,),
-                Image.network(
-                  'https://lh3.googleusercontent.com/proxy/f7AuVYmeD0RSLa0b-qFYTlgQUkqSNNWEdNdE8JwzWr_hEmi5rn07_aSyVaWrwTVKIT_h8_4xy6PQ9qB-vQNGKcMAT9FFkAXQxzaHGBw_PeYIpXdcwHh1xvLKldQ',
-                  scale: 2.7,
-                  color: Color(0xff88B4F5),
-                ),
-                SizedBox(height: 300,),
+               new Image.asset('assets/images/calendar_icon.png',scale: 2,color: Color(0xff8BB4F8),),
+                SizedBox(height: 100,),
                 FlatButton(
                   minWidth: 310,
                   height: 46,

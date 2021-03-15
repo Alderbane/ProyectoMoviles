@@ -34,15 +34,11 @@ class _SigninState extends State<Signin> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 90,
+                      height: 30,
                     ),
-                    Image.network(
-                      'https://lh3.googleusercontent.com/proxy/f7AuVYmeD0RSLa0b-qFYTlgQUkqSNNWEdNdE8JwzWr_hEmi5rn07_aSyVaWrwTVKIT_h8_4xy6PQ9qB-vQNGKcMAT9FFkAXQxzaHGBw_PeYIpXdcwHh1xvLKldQ',
-                      scale: 3,
-                      color: Color(0xff88B4F5),
-                    ),
+                    new Image.asset('assets/images/calendar_icon.png',scale: 3,color: Color(0xff8BB4F8),),
                     SizedBox(
-                      height: 80,
+                      height: 40,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
