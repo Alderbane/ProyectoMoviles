@@ -148,37 +148,7 @@ class _SignupState extends State<Signup> {
                       ],
                     ),
                     SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                              unselectedWidgetColor: Color(0xff5DB5C1)),
-                          child: Checkbox(
-                              value: _checkBoxValue,
-                              onChanged: (bool _newValue) {
-                                setState(() {
-                                  _checkBoxValue = _newValue;
-                                });
-                              },
-                              activeColor: Color(0xff5DB5C1),
-                              checkColor: Colors.transparent),
-                        ),
-                        Column(
-                          children: [
-                            Text('ACEPTO LOS TÉRMINOS Y CONDICIONES DE USO',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     MaterialButton(
                       minWidth: 310,
@@ -192,7 +162,6 @@ class _SignupState extends State<Signup> {
                       },
                       child: Text(
                         'REGISTRATE',
-                        style: TextStyle(fontFamily: 'AkzidenzGrotesk'),
                       ),
                     ),
                     SizedBox(

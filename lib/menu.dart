@@ -39,18 +39,13 @@ class _MenuState extends State<Menu> {
                   onTap: () {},
                 ),
                 ListTile(
-                  title: Text("Clases",style:TextStyle(color: Colors.white)),
+                  title: Text("Clases & Tareas",style:TextStyle(color: Colors.white)),
                   leading: Icon(Icons.home,color: Colors.white),
                   onTap: () {},
                 ),
                 ListTile(
                   title: Text("Calificaciones",style:TextStyle(color: Colors.white)),
                   leading: Icon(Icons.assignment_turned_in,color: Colors.white),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text("Tareas",style:TextStyle(color: Colors.white)),
-                  leading: Icon(Icons.assignment,color: Colors.white),
                   onTap: () {},
                 ),
               ],
@@ -62,7 +57,8 @@ class _MenuState extends State<Menu> {
                 children: <Widget>[
                   Expanded(
                     child: MaterialButton(
-                      child: Text("Cerrar sesión"),
+                      child: Text("Cerrar sesión",style: TextStyle(color: Colors.white)),
+                      color: Color(0xff33393E),
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             '/login', (Route<dynamic> route) => false);
