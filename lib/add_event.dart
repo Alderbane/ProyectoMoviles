@@ -20,46 +20,25 @@ class _AddEventState extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
+    return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: true,
+            title: Text("Agregar Evento"),
+            backgroundColor: Color(0xff212D40),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () {
+                    print("se guarda la cosa");
+                  })
+            ],
+          ),
           backgroundColor: Color(0xff1F2125),
           body: Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 10,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.cancel, color: Colors.grey[500]),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child: MaterialButton(
-                          child: Text("Guardar",
-                              style: TextStyle(color: Colors.white)),
-                          color: Color(0xff5DB5C1),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 TextField(
                   style: TextStyle(fontSize: 25, color: Colors.grey[500]),
                   cursorColor: Colors.grey[500],
@@ -96,10 +75,11 @@ class _AddEventState extends State<AddEvent> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("Todo el día", style: TextStyle(color: Colors.grey[600])),
+                      Text("Todo el día",
+                          style: TextStyle(color: Colors.grey[600])),
                       Switch(
                         value: _isAllDay,
-                        onChanged: (value){
+                        onChanged: (value) {
                           setState(() {
                             _isAllDay = value;
                           });
@@ -132,13 +112,13 @@ class _AddEventState extends State<AddEvent> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 20),
-                          child: Text(_isAllDay?'':
-                            '${selectedTime.format(context)}',
+                          child: Text(
+                            _isAllDay ? '' : '${selectedTime.format(context)}',
                             style: TextStyle(color: Colors.grey[500]),
                           ),
                         ),
                         onTap: () {
-                          if(!_isAllDay)_selectTime(context);
+                          if (!_isAllDay) _selectTime(context);
                         },
                       ),
                     ),
@@ -146,8 +126,7 @@ class _AddEventState extends State<AddEvent> {
                 )
               ],
             ),
-          )),
-    );
+          ));
   }
 
   _selectDate(BuildContext context) async {
@@ -155,8 +134,8 @@ class _AddEventState extends State<AddEvent> {
       currentDate: selectedDate,
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2015),
+      lastDate: DateTime(2050),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark(),

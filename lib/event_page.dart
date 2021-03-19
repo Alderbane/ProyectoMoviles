@@ -145,8 +145,8 @@ class _EventPageState extends State<EventPage> {
       currentDate: event.fecha,
       context: context,
       initialDate: event.fecha,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2015),
+      lastDate: DateTime(2050),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark(),
