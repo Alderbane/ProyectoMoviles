@@ -55,7 +55,7 @@ class _EventDetailsState extends State<EventDetails> {
               Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae sodales mauris. Cras velit turpis, euismod ut dignissim at, tincidunt nec ante. Donec sed consequat enim. Nam ut massa vel ex condimentum fringilla. Integer nec aliquet neque. Maecenas a quam a ligula blandit lacinia. Vivamus placerat arcu sed urna porta, quis faucibus nunc volutpat. Ut vel auctor dui, ut dignissim augue. Ut pulvinar facilisis velit sit amet pellentesque. Quisque ac congue orci. Etiam cursus sed arcu in rutrum. Sed lectus metus, fermentum nec iaculis eu, commodo in sapien. Pellentesque non feugiat tellus. Etiam luctus, enim a tincidunt finibus, magna diam gravida purus, eget interdum neque arcu a ante.",
+                  event.descripcion,
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
