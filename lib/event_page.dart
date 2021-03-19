@@ -26,7 +26,8 @@ class _EventPageState extends State<EventPage> {
     event = ModalRoute.of(context).settings.arguments;
     _titleController.text = event.titulo;
     _descController.text = event.descripcion;
-    _isAllDay = event.isAllDay();
+    print(_isAllDay);
+    _isAllDay = (_isAllDay == null)?event.isAllDay(): _isAllDay;
     // TimeOfDay(hour:int.parse(event.hora.split(":")[0]),minute: int.parse(event.hora.split(":")[1]));
     return Scaffold(
       appBar: AppBar(
