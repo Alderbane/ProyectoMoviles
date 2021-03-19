@@ -312,7 +312,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     fecha: DateTime(2021, 02, 26),
                     hora: "Todo el día",
                   );
-                  Navigator.of(context).pushNamed("/eventPage", arguments: e);
+                  Navigator.of(context).pushNamed("/eventDetail", arguments: e);
                 }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
               ),
             ))
