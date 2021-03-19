@@ -180,7 +180,7 @@ class _SignupState extends State<Signup> {
                     SizedBox(
                       height: 10,
                     ),
-                    FlatButton(
+                    MaterialButton(
                       minWidth: 310,
                       height: 46,
                       color: Color(0xff5DB5C1),

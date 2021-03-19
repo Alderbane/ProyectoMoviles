@@ -61,7 +61,7 @@ class _MenuState extends State<Menu> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
+                    child: MaterialButton(
                       child: Text("Cerrar sesión"),
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(

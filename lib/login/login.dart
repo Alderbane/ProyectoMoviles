@@ -25,7 +25,7 @@ class Login extends StatelessWidget {
                 SizedBox(height: 100,),
                new Image.asset('assets/images/calendar_icon.png',scale: 2,color: Color(0xff8BB4F8),),
                 SizedBox(height: 100,),
-                FlatButton(
+                MaterialButton(
                   minWidth: 310,
                   height: 46,
                   color: Color(0xff5DB5C1),
@@ -38,7 +38,7 @@ class Login extends StatelessWidget {
                   child: Text('REGISTRATE',style: TextStyle(fontFamily: 'AkzidenzGrotesk'),),
                 ),
                 SizedBox(height: 40,),
-                FlatButton(
+                MaterialButton(
                   minWidth: 310,
                   height: 46,
                   color: Color(0xff5DB5C1),

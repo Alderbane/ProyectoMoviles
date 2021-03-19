@@ -118,7 +118,7 @@ class _SigninState extends State<Signin> {
                     SizedBox(
                       height: 20,
                     ),
-                    FlatButton(
+                    MaterialButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       minWidth: 330,
