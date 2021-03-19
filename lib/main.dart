@@ -1,4 +1,5 @@
 import 'package:calendario/add_event.dart';
+import 'package:calendario/event_details.dart';
 import 'package:calendario/event_page.dart';
 import 'package:calendario/home_page.dart';
 import 'package:calendario/login/login.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         "/login": (context) => Login(),
         "/signin": (context) => Signin(),
         "/signup": (context) => Signup(),
+        "/eventDetail": (context) => EventDetails(),
         "/addEvent": (context) => AddEvent(),
         "/eventPage": (context) => EventPage(),
       },
