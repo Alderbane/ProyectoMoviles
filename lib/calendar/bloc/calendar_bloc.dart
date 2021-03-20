@@ -28,29 +28,22 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     // TODO: implement mapEventToState
     if (event is SaveEvent) {
       var calendarElements = [];
-      calendarElements = _calendarBox.get("calendar", defaultValue: [
-        Evento(
-            fecha: DateTime(2021, 03, 20),
-            titulo: "Entrega 2",
-            descripcion: "ALABADO SEA EL SEÑOR QUESUS",
-            hora: "Todo el día")
-      ]);
+      calendarElements = _calendarBox.get("calendar", defaultValue: []);
       calendarElements.add(event.evento);
       await _calendarBox.put("calendar", calendarElements);
-      print("Save event");
       yield CalendarLoadedState(eventos: calendarElements);
     } else if (event is LoadEvent) {
       List calendarElements = [];
-      calendarElements.add(Evento(
-        fecha: DateTime(2021, 03, 20),
-        titulo: "Entrega 2",
-        descripcion: "ALABADO SEA EL SEÑOR QUESUS",
-        hora: "Todo el día",
-      ));
       calendarElements =
           _calendarBox.get("calendar", defaultValue: calendarElements);
-
+      yield CalendarLoadedState(eventos: calendarElements);
+    } else if (event is EditEvent) {
+      yield CalendarEditState();
+    } else if (event is UpdateEvent) {
+      await _calendarBox.put("calendar", event.eventos);
+      var calendarElements = [];
+      calendarElements = _calendarBox.get("calendar", defaultValue: []);
       yield CalendarLoadedState(eventos: calendarElements);
     }
-  }
+  } //
 }
