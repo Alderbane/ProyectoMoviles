@@ -12,7 +12,7 @@ class LoadEvent extends CalendarEvent {
   List<Object> get props => [];
 }
 
-class LoadedEvent extends CalendarEvent {
+class EditEvent extends CalendarEvent {
   @override
   List<Object> get props => [];
 }
@@ -24,4 +24,13 @@ class SaveEvent extends CalendarEvent {
 
   @override
   List<Object> get props => [evento];
+}
+
+class UpdateEvent extends CalendarEvent {
+  final List eventos;
+
+  UpdateEvent({@required this.eventos});
+
+  @override
+  List<Object> get props => [eventos];
 }

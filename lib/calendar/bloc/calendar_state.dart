@@ -12,7 +12,7 @@ class CalendarInitial extends CalendarState {
   List<Object> get props => [];
 }
 
-class CalendarDoneState extends CalendarState {
+class CalendarEditState extends CalendarState {
   @override
   List<Object> get props => [];
 }

@@ -20,23 +20,27 @@ class _EventPageState extends State<EventPage> {
   CalendarBloc calendarBloc = CalendarBloc();
   var _titleController = TextEditingController();
   var _descController = TextEditingController();
+  DateTime _dateController;
   Evento event;
+
   TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 0);
   bool _isAllDay;
 
   @override
   Widget build(BuildContext context) {
-    // event = ModalRoute.of(context).settings.arguments;
-    event = Evento(
-        fecha: DateTime.now(),
-        titulo: "Test",
-        descripcion: "Test 2",
-        hora: "08:00");
-    _titleController.text = event.titulo ?? "Test";
-    _descController.text = event.descripcion ?? "Test2";
-    print(_isAllDay);
+    event = ModalRoute.of(context).settings.arguments;
+
+    // Data controllers
+    _titleController.text = event.titulo ?? "";
+    _descController.text = event.descripcion ?? "";
+    _dateController = event.fecha;
+    if (event.hora != "Todo el día") {
+      List horaList = event.hora.split(":");
+      selectedTime = TimeOfDay(
+          hour: int.parse(horaList[0]), minute: int.parse(horaList[1]));
+    }
+
     _isAllDay = (_isAllDay == null) ? event.isAllDay() : _isAllDay;
-    // TimeOfDay(hour:int.parse(event.hora.split(":")[0]),minute: int.parse(event.hora.split(":")[1]));
     return Scaffold(
       appBar: AppBar(
         title: Text("Editar Evento"),
@@ -45,13 +49,19 @@ class _EventPageState extends State<EventPage> {
           IconButton(
               icon: Icon(Icons.save),
               onPressed: () {
-                print("se guarda la cosa");
-                calendarBloc.add(SaveEvent(
-                    evento: Evento(
-                        fecha: DateTime.now(),
-                        titulo: "Test",
-                        descripcion: "Test 2",
-                        hora: "08:00")));
+                event.titulo = _titleController.text;
+                event.descripcion = _descController.text;
+                event.fecha = _dateController;
+                event.hora = _isAllDay
+                    ? "Todo el día"
+                    : '${selectedTime.format(context)}';
+                calendarBloc.add(EditEvent());
+                // calendarBloc.add(SaveEvent(
+                //     evento: Evento(
+                //         fecha: DateTime.now(),
+                //         titulo: "Test",
+                //         descripcion: "Test 2",
+                //         hora: "08:00")));
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               })
@@ -158,9 +168,9 @@ class _EventPageState extends State<EventPage> {
 
   _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-      currentDate: event.fecha,
+      currentDate: _dateController,
       context: context,
-      initialDate: event.fecha,
+      initialDate: _dateController,
       firstDate: DateTime(2015),
       lastDate: DateTime(2050),
       builder: (context, child) {
@@ -173,7 +183,7 @@ class _EventPageState extends State<EventPage> {
     if (picked != null && picked != event.fecha)
       setState(() {
         print(picked);
-        event.fecha = picked;
+        _dateController = picked;
       });
   }
 
