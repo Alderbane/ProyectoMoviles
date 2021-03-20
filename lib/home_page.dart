@@ -37,56 +37,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       microseconds: newDate.microsecond,
     ));
     _events = {
-      _currentDate.subtract(Duration(days: 30)): [
-        'Event A0',
-        'Event B0',
-        'Event C0'
-      ],
-      _currentDate.subtract(Duration(days: 27)): ['Event A1'],
-      _currentDate.subtract(Duration(days: 20)): [
-        'Event A2',
-        'Event B2',
-        'Event C2',
-        'Event D2'
-      ],
-      _currentDate.subtract(Duration(days: 16)): ['Event A3', 'Event B3'],
-      _currentDate.subtract(Duration(days: 10)): [
-        'Event A4',
-        'Event B4',
-        'Event C4'
-      ],
-      _currentDate.subtract(Duration(days: 4)): [
-        'Event A5',
-        'Event B5',
-        'Event C5'
-      ],
-      _currentDate.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-      _currentDate: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-      _currentDate.add(Duration(days: 1)): [
-        'Event A8',
-        'Event B8',
-        'Event C8',
-        'Event D8'
-      ],
-      _currentDate.add(Duration(days: 3)):
-          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
-      _currentDate.add(Duration(days: 7)): [
-        'Event A10',
-        'Event B10',
-        'Event C10'
-      ],
-      _currentDate.add(Duration(days: 11)): ['Event A11', 'Event B11'],
-      _currentDate.add(Duration(days: 17)): [
-        'Event A12',
-        'Event B12',
-        'Event C12',
-        'Event D12'
-      ],
-      _currentDate.add(Duration(days: 22)): ['Event A13', 'Event B13'],
-      _currentDate.add(Duration(days: 26)): [
-        'Event A14',
-        'Event B14',
-        'Event C14'
+      _currentDate: [
+        {"titulo": 'Event A7', "descripcion": "webos"},
+        {"titulo": 'Event webos', "descripcion": "webos"},
+        {"titulo": 'Event qlero', "descripcion": "webos"},
+        {"titulo": 'Event the game', "descripcion": "webos"},
       ],
     };
     // _events[_currentDate.add(Duration(days: 1))] = ["entrega 1"];
@@ -304,8 +259,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: ListTile(
                 title: Text(event
-                    .toString()), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
+                    .titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
                 onTap: () {
+                  print("${event.titulo}, ${event.descripcion}");
                   Evento e = Evento(
                     titulo: "Entrega 1",
                     descripcion: "Primera entrega de web",
