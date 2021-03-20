@@ -1,11 +1,13 @@
+import 'package:calendario/calendar/bloc/calendar_bloc.dart';
+import 'package:calendario/calendar/home_page.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-void main() =>
-    initializeDateFormatting('esMX', null).then((_) => runApp(EventPage()));
+// void main() =>
+//     initializeDateFormatting('esMX', null).then((_) => runApp(EventPage()));
 
 class EventPage extends StatefulWidget {
   EventPage({Key key}) : super(key: key);
@@ -15,6 +17,7 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  CalendarBloc calendarBloc = CalendarBloc();
   var _titleController = TextEditingController();
   var _descController = TextEditingController();
   Evento event;
@@ -23,9 +26,14 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    event = ModalRoute.of(context).settings.arguments;
-    _titleController.text = event.titulo;
-    _descController.text = event.descripcion;
+    // event = ModalRoute.of(context).settings.arguments;
+    event = Evento(
+        fecha: DateTime.now(),
+        titulo: "Test",
+        descripcion: "Test 2",
+        hora: "08:00");
+    _titleController.text = event.titulo ?? "Test";
+    _descController.text = event.descripcion ?? "Test2";
     print(_isAllDay);
     _isAllDay = (_isAllDay == null) ? event.isAllDay() : _isAllDay;
     // TimeOfDay(hour:int.parse(event.hora.split(":")[0]),minute: int.parse(event.hora.split(":")[1]));
@@ -38,6 +46,14 @@ class _EventPageState extends State<EventPage> {
               icon: Icon(Icons.save),
               onPressed: () {
                 print("se guarda la cosa");
+                calendarBloc.add(SaveEvent(
+                    evento: Evento(
+                        fecha: DateTime.now(),
+                        titulo: "Test",
+                        descripcion: "Test 2",
+                        hora: "08:00")));
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
               })
         ],
       ),

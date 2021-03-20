@@ -7,21 +7,21 @@ abstract class CalendarEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadEvent extends Equatable {
+class LoadEvent extends CalendarEvent {
   @override
   List<Object> get props => [];
 }
 
-class LoadedEvent extends Equatable {
+class LoadedEvent extends CalendarEvent {
   @override
   List<Object> get props => [];
 }
 
-class SaveEvent extends Equatable {
-  final Evento event;
+class SaveEvent extends CalendarEvent {
+  final Evento evento;
 
-  SaveEvent({@required this.event});
+  SaveEvent({@required this.evento});
 
   @override
-  List<Object> get props => [event];
+  List<Object> get props => [evento];
 }

@@ -1,8 +1,12 @@
+import 'package:calendario/calendar/bloc/calendar_bloc.dart';
+import 'package:calendario/calendar/event_page.dart';
 import 'package:calendario/menu.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
+import "package:collection/collection.dart";
 
 final Map<DateTime, List> _holidays = {
   DateTime(2020, 1, 1): ['New Year\'s Day'],
@@ -36,16 +40,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       milliseconds: newDate.millisecond,
       microseconds: newDate.microsecond,
     ));
-    _events = {
-      _currentDate: [
-        Evento(
-          descripcion: "Cosa Fea",
-          fecha: _currentDate,
-          hora: "Todo el día",
-          titulo: "Evento qlerisimo",
-        )
-      ],
-    };
+    _events = {};
     // _events[_currentDate.add(Duration(days: 1))] = ["entrega 1"];
     _selectedEvents = _events[_currentDate] ?? [];
     _calendarController = CalendarController();
@@ -85,16 +80,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         title: Text("Calendario"),
         backgroundColor: Color(0xff212D40),
       ),
-      body: Column(
-        children: [
-          _buildTableCalendarWithBuilders(),
-          const SizedBox(height: 8.0),
-          // _buildButtons(),
-          // const SizedBox(height: 8.0),
-          Expanded(child: _buildEventList()),
-        ],
-        mainAxisSize: MainAxisSize.max,
+      body: BlocProvider(
+        create: (context) => CalendarBloc(),
+        child: BlocBuilder<CalendarBloc, CalendarState>(
+          builder: (context, state) {
+            if (state is CalendarLoadedState) {
+              _events = groupBy(state.eventos, (obj) => obj.fecha);
+              return Column(
+                children: [
+                  _buildTableCalendarWithBuilders(),
+                  const SizedBox(height: 8.0),
+                  Expanded(child: _buildEventList()),
+                ],
+                mainAxisSize: MainAxisSize.max,
+              );
+            }
+            if (state is CalendarInitial) {
+              CalendarBloc().add(LoadEvent());
+            }
+            return Column(
+              children: [
+                _buildTableCalendarWithBuilders(),
+                const SizedBox(height: 8.0),
+                Expanded(child: _buildEventList()),
+              ],
+              mainAxisSize: MainAxisSize.max,
+            );
+          },
+        ),
       ),
+      // body: Column(
+      //   children: [
+      //     _buildTableCalendarWithBuilders(),
+      //     const SizedBox(height: 8.0),
+      //     // _buildButtons(),
+      //     // const SizedBox(height: 8.0),
+
+      //     Expanded(child: _buildEventList()),
+      //   ],
+      //   mainAxisSize: MainAxisSize.max,
+      // ),
       drawer: Drawer(
         child: Menu(),
       ),
@@ -257,7 +282,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             //   hora: "Todo el día",
             // );
             Navigator.of(context).pushNamed("/eventDetail", arguments: e);
-            print("${_events[e.fecha][0].titulo}");
           }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
         ),
       );
