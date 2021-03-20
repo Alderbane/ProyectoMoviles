@@ -1,7 +1,7 @@
-import 'package:calendario/add_event.dart';
-import 'package:calendario/event_details.dart';
-import 'package:calendario/event_page.dart';
-import 'package:calendario/home_page.dart';
+import 'package:calendario/calendar/add_event.dart';
+import 'package:calendario/calendar/event_details.dart';
+import 'package:calendario/calendar/event_page.dart';
+import 'package:calendario/calendar/home_page.dart';
 import 'package:calendario/login/login.dart';
 import 'package:calendario/login/signin.dart';
 import 'package:calendario/login/signup.dart';

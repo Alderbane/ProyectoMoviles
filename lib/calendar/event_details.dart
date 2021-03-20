@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'models/event.dart';
+import '../models/event.dart';
 
 void main() =>
     initializeDateFormatting('esMX', null).then((_) => runApp(EventDetails()));
