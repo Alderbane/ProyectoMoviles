@@ -10,11 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:calendario/models/event.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // final _localStorage = await getApplicationDocumentsDirectory();
-  // Hive..init(_localStorage.path)..registerAdapter(CalendarAdapter());
+  final _localStorage = await getApplicationDocumentsDirectory();
+  Hive
+    ..init(_localStorage.path)
+    ..registerAdapter(CalendarAdapter());
+  await Hive.openBox("CalendarEvents");
   initializeDateFormatting('es_MX').then((_) => runApp(MyApp()));
 }
 

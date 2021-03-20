@@ -1,4 +1,4 @@
-import 'package:calendario/models/event_model.dart';
+import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
@@ -27,7 +27,7 @@ class _EventPageState extends State<EventPage> {
     _titleController.text = event.titulo;
     _descController.text = event.descripcion;
     print(_isAllDay);
-    _isAllDay = (_isAllDay == null)?event.isAllDay(): _isAllDay;
+    _isAllDay = (_isAllDay == null) ? event.isAllDay() : _isAllDay;
     // TimeOfDay(hour:int.parse(event.hora.split(":")[0]),minute: int.parse(event.hora.split(":")[1]));
     return Scaffold(
       appBar: AppBar(

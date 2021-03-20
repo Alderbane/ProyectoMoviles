@@ -1,5 +1,5 @@
 import 'package:calendario/menu.dart';
-import 'package:calendario/models/event_model.dart';
+import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -38,10 +38,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ));
     _events = {
       _currentDate: [
-        {"titulo": 'Event A7', "descripcion": "webos"},
-        {"titulo": 'Event webos', "descripcion": "webos"},
-        {"titulo": 'Event qlero', "descripcion": "webos"},
-        {"titulo": 'Event the game', "descripcion": "webos"},
+        Evento(
+          descripcion: "Cosa Fea",
+          fecha: _currentDate,
+          hora: "Todo el día",
+          titulo: "Evento qlerisimo",
+        )
       ],
     };
     // _events[_currentDate.add(Duration(days: 1))] = ["entrega 1"];
@@ -97,21 +99,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: Menu(),
       ),
     );
-  }
-
-  void _addEvent() {
-    // print(_currentDate);
-    // print(_currentDate.add(Duration(days: 1)));
-    // print(_events.containsKey(_currentDate.add(Duration(days: 1))) == null);
-    if (!_events.containsKey(_currentDate.add(Duration(days: 1)))) {
-      _events[_currentDate.add(Duration(days: 1))] = ["entrega 1"];
-    } else {
-      _events.update(_currentDate.add(Duration(days: 1)), (value) {
-        value.add("cosa fea");
-        return value;
-      });
-    }
-    print(_events);
   }
 
   Widget _buildTableCalendarWithBuilders() {
@@ -248,31 +235,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildEventList() {
-    List<Widget> list = _selectedEvents
-        .map((event) => Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.8),
-                color: Color(0xff5DB5C1),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: ListTile(
-                title: Text(event
-                    .titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
-                onTap: () {
-                  print("${event.titulo}, ${event.descripcion}");
-                  Evento e = Evento(
-                    titulo: "Entrega 1",
-                    descripcion: "Primera entrega de web",
-                    fecha: DateTime(2021, 02, 26),
-                    hora: "Todo el día",
-                  );
-                  Navigator.of(context).pushNamed("/eventDetail", arguments: e);
-                }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
-              ),
-            ))
-        .toList();
+    List<Widget> list = _selectedEvents.map((event) {
+      Evento e = event;
+      return Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.8),
+          color: Color(0xff5DB5C1),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: ListTile(
+          title: Text(e
+              .titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
+          onTap: () {
+            print("${e.titulo}, ${e.descripcion}");
+
+            // Evento e = Evento(
+            //   titulo: "Entrega 1",
+            //   descripcion: "Primera entrega de web",
+            //   fecha: DateTime(2021, 02, 26),
+            //   hora: "Todo el día",
+            // );
+            Navigator.of(context).pushNamed("/eventDetail", arguments: e);
+            print("${_events[e.fecha][0].titulo}");
+          }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
+        ),
+      );
+    }).toList();
     list.add(
       Container(
         decoration: BoxDecoration(
