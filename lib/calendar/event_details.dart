@@ -64,7 +64,7 @@ class _EventDetailsState extends State<EventDetails> {
                   top: 25,
                 ),
                 child: Text(
-                  '${new DateFormat.yMMMMEEEEd('es').format(event.fecha)}, ${event.isAllDay() ? event.hora : "a las" + event.hora}',
+                  '${new DateFormat.yMMMMEEEEd('es').format(event.fecha)}, ${event.isAllDay() ? event.hora : "a las " + event.hora}',
                   style: TextStyle(color: Colors.grey[500]),
                 ),
               )
