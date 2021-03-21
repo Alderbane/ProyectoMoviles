@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import '../constants.dart';
+
 // void main() =>
 //     initializeDateFormatting('esMX', null).then((_) => runApp(EventPage()));
 
@@ -22,6 +24,7 @@ class _EventPageState extends State<EventPage> {
   var _descController = TextEditingController();
   DateTime _dateController;
   Evento event;
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 0);
   bool _isAllDay;
@@ -46,12 +49,26 @@ class _EventPageState extends State<EventPage> {
     _isAllDay = (_isAllDay == null) ? event.isAllDay() : _isAllDay;
     return Scaffold(
       appBar: AppBar(
+        key: _scaffoldKey,
         title: Text("Editar Evento"),
         backgroundColor: Color(0xff212D40),
         actions: [
           IconButton(
               icon: Icon(Icons.save),
               onPressed: () {
+                if (_titleController.text.isEmpty) {
+                  _scaffoldKey.currentState
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      backgroundColor: color2,
+                      content: Text(
+                        "Titulo no puede estar vacio",
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ));
+                  return;
+                }
                 event.titulo = _titleController.text;
                 event.descripcion = _descController.text;
                 event.fecha = _dateController;
