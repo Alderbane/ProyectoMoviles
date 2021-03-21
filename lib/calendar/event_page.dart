@@ -54,7 +54,7 @@ class _EventPageState extends State<EventPage> {
                 event.fecha = _dateController;
                 event.hora = _isAllDay
                     ? "Todo el día"
-                    : '${selectedTime.format(context)}';
+                    : '${selectedTime.hour}:${selectedTime.minute}';
                 calendarBloc.add(EditEvent());
                 // calendarBloc.add(SaveEvent(
                 //     evento: Evento(
