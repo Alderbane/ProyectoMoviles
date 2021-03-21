@@ -1,3 +1,4 @@
+import 'package:calendario/constants.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,6 +11,7 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   String dateTime;
   CalendarBloc calendarBloc = CalendarBloc();
   var _titleController = TextEditingController();
@@ -23,6 +25,7 @@ class _AddEventState extends State<AddEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: true,
           title: Text("Agregar Evento"),
@@ -31,7 +34,19 @@ class _AddEventState extends State<AddEvent> {
             IconButton(
                 icon: Icon(Icons.save),
                 onPressed: () {
-                  print("se guarda la cosa");
+                  if (_titleController.text.isEmpty) {
+                    _scaffoldKey.currentState
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(SnackBar(
+                        backgroundColor: color2,
+                        content: Text(
+                          "Titulo no puede estar vacio",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ));
+                    return;
+                  }
                   calendarBloc.add(
                     SaveEvent(
                       evento: Evento(
@@ -44,6 +59,7 @@ class _AddEventState extends State<AddEvent> {
                       ),
                     ),
                   );
+                  Navigator.of(context).pop();
                 })
           ],
         ),
