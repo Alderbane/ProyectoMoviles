@@ -25,19 +25,22 @@ class _EventPageState extends State<EventPage> {
 
   TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 0);
   bool _isAllDay;
-
+  bool flag = false;
   @override
   Widget build(BuildContext context) {
     event = ModalRoute.of(context).settings.arguments;
 
     // Data controllers
-    _titleController.text = event.titulo ?? "";
-    _descController.text = event.descripcion ?? "";
-    _dateController = event.fecha;
-    if (event.hora != "Todo el día") {
-      List horaList = event.hora.split(":");
-      selectedTime = TimeOfDay(
-          hour: int.parse(horaList[0]), minute: int.parse(horaList[1]));
+    if (!flag) {
+      _titleController.text = event.titulo ?? "";
+      _descController.text = event.descripcion ?? "";
+      _dateController = event.fecha;
+      if (event.hora != "Todo el día") {
+        List horaList = event.hora.split(":");
+        selectedTime = TimeOfDay(
+            hour: int.parse(horaList[0]), minute: int.parse(horaList[1]));
+      }
+      flag = !flag;
     }
 
     _isAllDay = (_isAllDay == null) ? event.isAllDay() : _isAllDay;
