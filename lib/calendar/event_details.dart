@@ -5,9 +5,6 @@ import 'package:intl/intl.dart';
 
 import '../models/event.dart';
 
-void main() =>
-    initializeDateFormatting('esMX', null).then((_) => runApp(EventDetails()));
-
 class EventDetails extends StatefulWidget {
   EventDetails({Key key}) : super(key: key);
 

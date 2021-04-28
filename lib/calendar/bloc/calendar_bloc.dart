@@ -28,9 +28,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     // TODO: implement mapEventToState
     if (event is SaveEvent) {
       var calendarElements = [];
+      var id = _calendarBox.get("id", defaultValue: 0);
       calendarElements = _calendarBox.get("calendar", defaultValue: []);
+      event.evento.id = id;
       calendarElements.add(event.evento);
       await _calendarBox.put("calendar", calendarElements);
+      await _calendarBox.put("id", _calendarBox.get("id", defaultValue: 0) + 1);
       yield CalendarLoadedState(eventos: calendarElements);
     } else if (event is LoadEvent) {
       List calendarElements = [];
@@ -40,9 +43,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     } else if (event is EditEvent) {
       yield CalendarEditState();
     } else if (event is UpdateEvent) {
-      await _calendarBox.put("calendar", event.eventos);
       var calendarElements = [];
-      calendarElements = _calendarBox.get("calendar", defaultValue: []);
+      calendarElements = _calendarBox.get("calendar");
+      int i = calendarElements
+          .indexWhere((element) => element.id == event.evento.id);
+      calendarElements[i] = event.evento;
+      await _calendarBox.put("calendar", calendarElements);
       yield CalendarLoadedState(eventos: calendarElements);
     }
   } //

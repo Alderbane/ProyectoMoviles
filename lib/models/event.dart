@@ -13,7 +13,8 @@ class Evento {
   String descripcion;
   @HiveField(3)
   String hora;
-
+  @HiveField(4)
+  int id;
   Evento({
     @required this.fecha,
     @required this.titulo,

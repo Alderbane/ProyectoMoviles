@@ -96,16 +96,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               );
             } else if (state is CalendarInitial) {
               CalendarBloc().add(LoadEvent());
-            } else if (state is CalendarEditState) {
-              List eventList = [];
-              _events.forEach((key, value) {
-                value.forEach((element) {
-                  eventList.add(element);
-                });
-              });
-
-              CalendarBloc().add(UpdateEvent(eventos: eventList));
             }
+            // else if (state is CalendarEditState) {
+            //   List eventList = [];
+            //   _events.forEach((key, value) {
+            //     value.forEach((element) {
+            //       eventList.add(element);
+            //     });
+            //   });
+
+            //   CalendarBloc().add(UpdateEvent(eventos: eventList));
+            // }
 
             return Column(
               children: [

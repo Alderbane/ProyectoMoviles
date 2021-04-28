@@ -75,7 +75,7 @@ class _EventPageState extends State<EventPage> {
                 event.hora = _isAllDay
                     ? "Todo el día"
                     : '${selectedTime.hour}:${selectedTime.minute}';
-                calendarBloc.add(EditEvent());
+                calendarBloc.add(UpdateEvent(evento: event));
                 // calendarBloc.add(SaveEvent(
                 //     evento: Evento(
                 //         fecha: DateTime.now(),

@@ -27,10 +27,10 @@ class SaveEvent extends CalendarEvent {
 }
 
 class UpdateEvent extends CalendarEvent {
-  final List eventos;
+  final Evento evento;
 
-  UpdateEvent({@required this.eventos});
+  UpdateEvent({@required this.evento});
 
   @override
-  List<Object> get props => [eventos];
+  List<Object> get props => [evento];
 }
