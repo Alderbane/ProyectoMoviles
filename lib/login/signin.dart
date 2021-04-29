@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:calendario/login/bloc/login_bloc.dart';
 
 void main() => runApp(Signin());
 
@@ -8,7 +9,11 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  LoginBloc _loginBloc = LoginBloc();
   bool _isHidden = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class _SigninState extends State<Signin> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xff212D40),Color(0xff1F2125)],
+                colors: [Color(0xff212D40), Color(0xff1F2125)],
               ),
             ),
             child: Padding(
@@ -36,37 +41,52 @@ class _SigninState extends State<Signin> {
                     SizedBox(
                       height: 30,
                     ),
-                    new Image.asset('assets/images/calendar_icon.png',scale: 3,color: Color(0xff8BB4F8),),
+                    new Image.asset(
+                      'assets/images/calendar_icon.png',
+                      scale: 3,
+                      color: Color(0xff8BB4F8),
+                    ),
                     SizedBox(
                       height: 40,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Nombre Completo:',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          height: 46,
-                          child: TextField(
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Correo Electronico:',
                             style: TextStyle(
-                              height: 2,
-                            ),
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                  borderRadius: BorderRadius.all(Radius.zero)),
+                              color: Colors.white,
                             ),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 46,
+                            child: TextFormField(
+                              controller: emailController,
+                              style: TextStyle(
+                                height: 2,
+                              ),
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.zero)),
+                              ),
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 16,
@@ -82,7 +102,8 @@ class _SigninState extends State<Signin> {
                         ),
                         Container(
                           height: 46,
-                          child: TextField(
+                          child: TextFormField(
+                            controller: passwordController,
                             obscureText: _isHidden,
                             style: TextStyle(color: Colors.white),
                             cursorColor: Colors.white,
@@ -111,6 +132,12 @@ class _SigninState extends State<Signin> {
                                 ),
                               ),
                             ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                           ),
                         )
                       ],
@@ -125,7 +152,13 @@ class _SigninState extends State<Signin> {
                       height: 46,
                       color: Color(0xff5DB5C1),
                       onPressed: () {
-                        Navigator.of(context).pushReplacementNamed('/');
+                        print(emailController.value.text);
+                        print(passwordController.value.text);
+                        if (_formKey.currentState.validate()) {
+                          _loginBloc.add(SigninEmailEvent(
+                              email: emailController.value.text,
+                              password: passwordController.value.text));
+                        }
                       },
                       child: Text(
                         'ENTRAR',
@@ -149,7 +182,8 @@ class _SigninState extends State<Signin> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushReplacementNamed('/signup');
+                            Navigator.of(context)
+                                .pushReplacementNamed('/signup');
                           },
                           child: Text(
                             'REGÍSTRATE',

@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:265219540657:android:c04c5930e1ccb2e2288490",
+        "android_client_info": {
+          "package_name": "com.example.calendario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "265219540657-npgjc5k0i4ab26h8utjq3sbf8k8gsoth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfL2d4jUMn0dKB4Oc8qi0mnyfzjmWCLFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265219540657-npgjc5k0i4ab26h8utjq3sbf8k8gsoth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:265219540657:android:22643d622a6f4cb7288490",
         "android_client_info": {
           "package_name": "com.iteso.phonecalendar"

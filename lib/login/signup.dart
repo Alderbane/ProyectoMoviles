@@ -1,3 +1,4 @@
+import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(Signup());
@@ -10,6 +11,11 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   bool _isHidden = true;
   bool _checkBoxValue = false;
+  LoginBloc _loginBloc = LoginBloc();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _pwdController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,37 +43,52 @@ class _SignupState extends State<Signup> {
                     SizedBox(
                       height: 40,
                     ),
-                    new Image.asset('assets/images/calendar_icon.png',scale: 3,color: Color(0xff8BB4F8),),
+                    new Image.asset(
+                      'assets/images/calendar_icon.png',
+                      scale: 3,
+                      color: Color(0xff8BB4F8),
+                    ),
                     SizedBox(
                       height: 50,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Nombre Completo:',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          height: 46,
-                          child: TextField(
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Nombre Completo:',
                             style: TextStyle(
-                              height: 1,
-                            ),
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                  borderRadius: BorderRadius.all(Radius.zero)),
+                              color: Colors.white,
                             ),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 46,
+                            child: TextFormField(
+                              controller: _nameController,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                              style: TextStyle(
+                                height: 1,
+                              ),
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.zero)),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 16,
@@ -83,7 +104,14 @@ class _SignupState extends State<Signup> {
                         ),
                         Container(
                           height: 46,
-                          child: TextField(
+                          child: TextFormField(
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                             style: TextStyle(
                               height: 2,
                             ),
@@ -114,7 +142,14 @@ class _SignupState extends State<Signup> {
                         ),
                         Container(
                           height: 46,
-                          child: TextField(
+                          child: TextFormField(
+                            controller: _pwdController,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                             obscureText: _isHidden,
                             style: TextStyle(color: Colors.white),
                             cursorColor: Colors.white,
@@ -158,7 +193,14 @@ class _SignupState extends State<Signup> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushReplacementNamed('/');
+                        if (_formKey.currentState.validate()) {
+                          print(_nameController.text);
+                          print(_emailController.text);
+                          print(_pwdController.text);
+                          _loginBloc.add(SignUpEvent(name: _nameController.text, email: _emailController.text, password: _pwdController.text));
+                        } else {
+                          print("Te falta algo");
+                        }
                       },
                       child: Text(
                         'REGISTRATE',
