@@ -1,7 +1,6 @@
 import 'package:calendario/constants.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:calendario/calendar/bloc/calendar_bloc.dart';
 
