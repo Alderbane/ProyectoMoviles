@@ -25,7 +25,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   Stream<CalendarState> mapEventToState(
     CalendarEvent event,
   ) async* {
-    // TODO: implement mapEventToState
     if (event is SaveEvent) {
       var calendarElements = [];
       var id = _calendarBox.get("id", defaultValue: 0);

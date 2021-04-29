@@ -168,13 +168,14 @@ class _EventPageState extends State<EventPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15.0, vertical: 20),
-                      child: Text(
-                        '${selectedTime.format(context)}',
+                      child: Text(_isAllDay
+                              ? ''
+                              : '${selectedTime.format(context)}',
                         style: TextStyle(color: Colors.grey[500]),
                       ),
                     ),
                     onTap: () {
-                      _selectTime(context);
+                      if(!_isAllDay)_selectTime(context);
                     },
                   ),
                 ),

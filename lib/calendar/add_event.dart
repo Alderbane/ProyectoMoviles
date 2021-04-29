@@ -147,7 +147,7 @@ class _AddEventState extends State<AddEvent> {
                         child: Text(
                           _isAllDay
                               ? ''
-                              : '${selectedTime.hour}:${selectedTime.minute}',
+                              : '${selectedTime.format(context)}',
                           style: TextStyle(color: Colors.grey[500]),
                         ),
                       ),
