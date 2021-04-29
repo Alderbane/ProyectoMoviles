@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "265219540657",
+    "project_id": "phone-calendar-4d906",
+    "storage_bucket": "phone-calendar-4d906.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265219540657:android:22643d622a6f4cb7288490",
+        "android_client_info": {
+          "package_name": "com.iteso.phonecalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "265219540657-1eg5g6ibllf8cvfajinoqboh11lpovfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iteso.phonecalendar",
+            "certificate_hash": "a5d187358e09e13c6753980609e05758034bd581"
+          }
+        },
+        {
+          "client_id": "265219540657-746egebvbrpsje40std21tkgf119qr6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iteso.phonecalendar",
+            "certificate_hash": "cacda7569bafec578c2f6d991ff6b1eda62ef087"
+          }
+        },
+        {
+          "client_id": "265219540657-ouqkml9ubcfmnd6ung791epihul5d4tp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iteso.phonecalendar",
+            "certificate_hash": "629deb328e13af6581234487a23dfe74a93725fe"
+          }
+        },
+        {
+          "client_id": "265219540657-npgjc5k0i4ab26h8utjq3sbf8k8gsoth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfL2d4jUMn0dKB4Oc8qi0mnyfzjmWCLFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265219540657-npgjc5k0i4ab26h8utjq3sbf8k8gsoth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

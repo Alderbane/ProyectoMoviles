@@ -6,6 +6,7 @@ import 'package:calendario/login/login.dart';
 import 'package:calendario/login/signin.dart';
 import 'package:calendario/login/signup.dart';
 import 'package:calendario/splash2.dart';
+import 'package:calendario/tareas_clases/clases.dart';
 import 'package:calendario/tareas_clases/tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         "/eventDetail": (context) => EventDetails(),
         "/addEvent": (context) => AddEvent(),
         "/eventPage": (context) => EventPage(),
-        "/tarea":(context)=> Tarea()
+        "/tarea":(context)=> Tarea(),
+        "/clases":(context)=>Clases()
       },
     );
   }

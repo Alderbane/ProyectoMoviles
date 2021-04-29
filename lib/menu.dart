@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import './models/event.dart';
+import 'package:firebase_core/firebase_core.dart'; // new
+import 'package:firebase_auth/firebase_auth.dart'; // new
+import 'package:provider/provider.dart';           // new
+
+
 
 class Menu extends StatefulWidget {
   Menu({Key key}) : super(key: key);
@@ -29,23 +35,29 @@ class _MenuState extends State<Menu> {
                 SizedBox(
                   height: 8,
                 ),
-                Text("jdoe@email.com",style:TextStyle(color: Colors.white)),
+                Text("jdoe@email.com", style: TextStyle(color: Colors.white)),
                 SizedBox(
                   height: 16,
                 ),
                 ListTile(
-                  title: Text("Calendario",style:TextStyle(color: Colors.white)),
-                  leading: Icon(Icons.calendar_today,color: Colors.white),
+                  title:
+                      Text("Calendario", style: TextStyle(color: Colors.white)),
+                  leading: Icon(Icons.calendar_today, color: Colors.white),
                   onTap: () {},
                 ),
                 ListTile(
-                  title: Text("Clases & Tareas",style:TextStyle(color: Colors.white)),
-                  leading: Icon(Icons.home,color: Colors.white),
-                  onTap: () {},
+                  title: Text("Clases & Tareas",
+                      style: TextStyle(color: Colors.white)),
+                  leading: Icon(Icons.home, color: Colors.white),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/clases");
+                  },
                 ),
                 ListTile(
-                  title: Text("Calificaciones",style:TextStyle(color: Colors.white)),
-                  leading: Icon(Icons.assignment_turned_in,color: Colors.white),
+                  title: Text("Calificaciones",
+                      style: TextStyle(color: Colors.white)),
+                  leading:
+                      Icon(Icons.assignment_turned_in, color: Colors.white),
                   onTap: () {},
                 ),
               ],
@@ -57,7 +69,8 @@ class _MenuState extends State<Menu> {
                 children: <Widget>[
                   Expanded(
                     child: MaterialButton(
-                      child: Text("Cerrar sesión",style: TextStyle(color: Colors.white)),
+                      child: Text("Cerrar sesión",
+                          style: TextStyle(color: Colors.white)),
                       color: Color(0xff33393E),
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
