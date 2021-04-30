@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import './models/event.dart';
 import 'package:firebase_core/firebase_core.dart'; // new
 import 'package:firebase_auth/firebase_auth.dart'; // new
-import 'package:provider/provider.dart';           // new
-
-
+import 'package:provider/provider.dart'; // new
 
 class Menu extends StatefulWidget {
   Menu({Key key}) : super(key: key);
@@ -14,6 +12,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  var _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +25,7 @@ class _MenuState extends State<Menu> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  "john doe",
+                  _auth.currentUser.displayName,
                   style: Theme.of(context)
                       .textTheme
                       .headline4
@@ -35,7 +34,8 @@ class _MenuState extends State<Menu> {
                 SizedBox(
                   height: 8,
                 ),
-                Text("jdoe@email.com", style: TextStyle(color: Colors.white)),
+                Text(_auth.currentUser.email,
+                    style: TextStyle(color: Colors.white)),
                 SizedBox(
                   height: 16,
                 ),
@@ -72,9 +72,11 @@ class _MenuState extends State<Menu> {
                       child: Text("Cerrar sesión",
                           style: TextStyle(color: Colors.white)),
                       color: Color(0xff33393E),
-                      onPressed: () {
+                      onPressed: () async {
+                        await _auth.signOut();
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             '/login', (Route<dynamic> route) => false);
+                        print(_auth.currentUser);
                       },
                     ),
                   ),
