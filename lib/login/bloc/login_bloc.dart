@@ -10,9 +10,16 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+var credential;
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial());
+  // LoginBloc() : super(LoginInitial());
+    static final LoginBloc _booksRepository = LoginBloc._internal();
+
+  factory LoginBloc() {
+    return _booksRepository;
+  }
+  LoginBloc._internal() : super(LoginInitial());
 
   @override
   Stream<LoginState> mapEventToState(
@@ -22,8 +29,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is SigninEmailEvent) {
       try {
         yield LoginLoadingState();
-        await _auth.signInWithEmailAndPassword(
+        // await _auth.signInWithEmailAndPassword(
+        //     email: event.email, password: event.password);
+        credential = await _auth.signInWithEmailAndPassword(
             email: event.email, password: event.password);
+        print(credential.user);
         yield LoginSuccessState();
       } catch (e) {
         print(e.toString());
@@ -32,7 +42,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is SignUpEvent) {
       try {
         yield LoginLoadingState();
-        var credential = await _auth.createUserWithEmailAndPassword(email: event.email, password: event.password);
+        credential = await _auth.createUserWithEmailAndPassword(
+            email: event.email, password: event.password);
         await credential.user.updateProfile(displayName: event.name);
         print(credential.user);
         yield LoginSuccessState();
