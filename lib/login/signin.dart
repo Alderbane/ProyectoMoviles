@@ -1,3 +1,4 @@
+import 'package:calendario/calendar/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -208,11 +209,11 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                     ),
-                  )
-                ,
+                  ),
                 listener: (context, state) {
                   if (state is LoginSuccessState) {
-                    Navigator.of(context).pushReplacementNamed('/');
+                    // Navigator.of(context).pushReplacementNamed('/');
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) {return HomePage();}));
                   }
                 },
               ),
