@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() => runApp(Signin());
-
 class Signin extends StatefulWidget {
   @override
   _SigninState createState() => _SigninState();

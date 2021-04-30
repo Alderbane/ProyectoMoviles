@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/splash',
       routes: {
         "/splash": (context) => Splash2(),
-        "/": (context) => HomePage(),
+        "/calendar": (context) => HomePage(),
         "/login": (context) => Login(),
         "/signin": (context) => Signin(),
         "/signup": (context) => Signup(),
