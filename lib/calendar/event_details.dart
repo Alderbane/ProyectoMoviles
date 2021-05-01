@@ -1,3 +1,4 @@
+import 'package:calendario/calendar/bloc/calendar_bloc.dart';
 import 'package:calendario/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,11 +24,18 @@ class _EventDetailsState extends State<EventDetails> {
         backgroundColor: Color(0xff212D40),
         actions: [
           IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                print("Entrar a edicion");
-                Navigator.of(context).pushNamed("/eventPage", arguments: event);
-              })
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              CalendarBloc().add(DeleteEvent(evento: event));
+              Navigator.of(context).pop();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.of(context).pushNamed("/eventPage", arguments: event);
+            },
+          ),
         ],
       ),
       body: Padding(

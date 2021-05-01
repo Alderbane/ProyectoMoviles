@@ -39,3 +39,12 @@ class DownloadEvent extends CalendarEvent {
   @override
   List<Object> get props => [];
 }
+
+class DeleteEvent extends CalendarEvent {
+  final Evento evento;
+
+  DeleteEvent({@required this.evento});
+
+  @override
+  List<Object> get props => [evento];
+}

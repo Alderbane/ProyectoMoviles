@@ -69,15 +69,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       yield CalendarEditState();
     } else if (event is UpdateEvent) {
       var calendarElements = [];
-      // var myDoc = _calendarDB
-      //     .collection('eventos')
-      //     .doc(_id)
-      //     .collection('Mis eventos')
-      //     .where('id', isEqualTo: event.evento.id)
-      //     .get()
-      //     .then((value) {
-      //       value.
-      //     });
       var misEventos = await _calendarDB
           .collection('eventos')
           .doc(_id)
@@ -104,6 +95,22 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         // if(6_eventId < element.data()[])
       });
       await _calendarBox.put("calendar", calendarElements);
+    } else if (event is DeleteEvent) {
+      var calendarElements = [];
+      var misEventos = await _calendarDB
+          .collection('eventos')
+          .doc(_id)
+          .collection('Mis eventos');
+      var eventosFire =
+          await misEventos.where('id', isEqualTo: event.evento.id).get();
+      await misEventos.doc(eventosFire.docs[0].id).delete();
+
+      calendarElements = _calendarBox.get("calendar");
+      int i = calendarElements
+          .indexWhere((element) => element.id == event.evento.id);
+      calendarElements.removeAt(i);
+      await _calendarBox.put("calendar", calendarElements);
+      yield CalendarLoadedState(eventos: calendarElements);
     }
   } //
 }
