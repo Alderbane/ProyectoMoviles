@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   CalendarController _calendarController;
   Map<DateTime, List> _events = {};
   DateTime _currentDate;
+  DateTime selectedDate;
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void _onDaySelected(DateTime day, List events, List holidays) {
+    selectedDate = day;
     print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         backgroundColor: Color(0xff212D40),
       ),
       body: BlocProvider(
-        create: (context) => CalendarBloc(),
+        create: (context) => CalendarBloc()..add(DownloadEvent()),
         child: BlocBuilder<CalendarBloc, CalendarState>(
           builder: (context, state) {
             if (state is CalendarLoadedState) {
@@ -309,8 +311,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
           title: Text("+ Agregar evento"),
-          onTap: () => Navigator.of(context).pushNamed(
-              "/addEvent"), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
+          onTap: () => Navigator.of(context).pushNamed("/addEvent",
+              arguments:
+                  selectedDate), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
         ),
       ),
     );

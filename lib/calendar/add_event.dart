@@ -18,11 +18,18 @@ class _AddEventState extends State<AddEvent> {
   DateTime selectedDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
-
+  bool loadedDate = false;
   bool _isAllDay = false;
 
   @override
   Widget build(BuildContext context) {
+    if (!loadedDate) {
+      DateTime transferDate = ModalRoute.of(context).settings.arguments;
+      if (transferDate != null)
+        selectedDate =
+            DateTime(transferDate.year, transferDate.month, transferDate.day);
+      loadedDate = !loadedDate;
+    }
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(

@@ -34,3 +34,8 @@ class UpdateEvent extends CalendarEvent {
   @override
   List<Object> get props => [evento];
 }
+
+class DownloadEvent extends CalendarEvent {
+  @override
+  List<Object> get props => [];
+}

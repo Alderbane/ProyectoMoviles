@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
@@ -20,6 +21,7 @@ class Evento {
     @required this.titulo,
     @required this.descripcion,
     @required this.hora,
+    this.id,
   });
 
   bool isAllDay() {
@@ -34,5 +36,16 @@ class Evento {
       'hora': hora,
       'id': id
     };
+  }
+
+  static Evento fromMap(Map<String, dynamic> mp) {
+    return Evento(
+      titulo: mp['titulo'],
+      descripcion: mp['descripcion'],
+      fecha: DateTime.fromMicrosecondsSinceEpoch(
+          mp['fecha'].microsecondsSinceEpoch),
+      hora: mp['hora'],
+      id: mp['id'],
+    );
   }
 }
