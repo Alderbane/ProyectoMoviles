@@ -74,6 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var ctx = context;
     return Scaffold(
       backgroundColor: Color(0xff1F2125),
       appBar: AppBar(
@@ -131,7 +132,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       //   mainAxisSize: MainAxisSize.max,
       // ),
       drawer: Drawer(
-        child: Menu(),
+        child: Menu(
+          ctx: ctx,
+        ),
       ),
     );
   }

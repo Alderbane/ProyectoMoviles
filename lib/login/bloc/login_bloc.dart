@@ -14,7 +14,7 @@ var credential;
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   // LoginBloc() : super(LoginInitial());
-    static final LoginBloc _booksRepository = LoginBloc._internal();
+  static final LoginBloc _booksRepository = LoginBloc._internal();
 
   factory LoginBloc() {
     return _booksRepository;
@@ -51,6 +51,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print(e.toString());
         yield LoginErrorState(error: "Error al hacer login: ${e.toString()}");
       }
+    } else if (event is VerifyLoginEvent) {
+      if (_auth.currentUser == null) {
+        print("No tiene sesion");
+        yield NotLoggedState();
+      } else {
+        print("Si tiene sesion");
+        yield AlreadyLoggedState();
+      }
+    } else if (event is SignoutEvent) {
+      await _auth.signOut();
+      yield SignoutSuccessState();
     }
   }
 }

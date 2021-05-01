@@ -31,3 +31,18 @@ class LoginErrorState extends LoginState {
   @override
   List<Object> get props => [error, code];
 }
+
+class AlreadyLoggedState extends LoginState {
+  @override
+  List<Object> get props => [];
+}
+
+class NotLoggedState extends LoginState {
+  @override
+  List<Object> get props => [];
+}
+
+class SignoutSuccessState extends LoginState {
+  @override
+  List<Object> get props => [];
+}

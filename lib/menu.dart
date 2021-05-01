@@ -1,18 +1,16 @@
+import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import './models/event.dart';
 import 'package:firebase_core/firebase_core.dart'; // new
 import 'package:firebase_auth/firebase_auth.dart'; // new
-import 'package:provider/provider.dart'; // new
+import 'package:provider/provider.dart';
 
-class Menu extends StatefulWidget {
-  Menu({Key key}) : super(key: key);
+import 'login/login.dart'; // new
 
-  @override
-  _MenuState createState() => _MenuState();
-}
-
-class _MenuState extends State<Menu> {
+class Menu extends StatelessWidget {
+  var ctx;
   var _auth = FirebaseAuth.instance;
+  Menu({Key key, this.ctx}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,7 +48,7 @@ class _MenuState extends State<Menu> {
                       style: TextStyle(color: Colors.white)),
                   leading: Icon(Icons.home, color: Colors.white),
                   onTap: () {
-                    Navigator.of(context).pushNamed("/clases");
+                    Navigator.of(this.ctx).pushNamed("/clases");
                   },
                 ),
                 ListTile(
@@ -73,9 +71,11 @@ class _MenuState extends State<Menu> {
                           style: TextStyle(color: Colors.white)),
                       color: Color(0xff33393E),
                       onPressed: () async {
-                        await _auth.signOut();
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/login', (Route<dynamic> route) => false);
+                        LoginBloc().add(SignoutEvent());
+                        Navigator.of(ctx).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return Login();
+                        }), (Route<dynamic> route) => false);
                         print(_auth.currentUser);
                       },
                     ),
@@ -89,3 +89,5 @@ class _MenuState extends State<Menu> {
     );
   }
 }
+
+// class _MenuState extends State<Menu> {}

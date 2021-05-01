@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'School Calendar',
-      initialRoute: '/splash',
+      initialRoute: '/login',
       routes: {
         "/splash": (context) => Splash2(),
         "/calendar": (context) => HomePage(),
