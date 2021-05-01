@@ -14,19 +14,12 @@ class Login extends StatelessWidget {
       home: Scaffold(
           body: BlocProvider(
         create: (context) => LoginBloc()..add(VerifyLoginEvent()),
-        child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is NotLoggedState || state is SignoutSuccessState)
-              return buildLogin(ctx);
-            else if (state is AlreadyLoggedState)
+        child: BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is AlreadyLoggedState)
               Navigator.of(ctx).pushReplacementNamed('/calendar');
-            // else if (state is LoginLoadingState) {
-            //   return Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // }
-            return buildLogin(ctx);
           },
+          child: buildLogin(ctx),
         ),
       )),
     );

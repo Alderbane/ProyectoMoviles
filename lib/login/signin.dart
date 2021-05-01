@@ -22,8 +22,10 @@ class _SigninState extends State<Signin> {
         home: Scaffold(
             resizeToAvoidBottomInset: true,
             body: BlocProvider(
+              lazy: false,
               create: (context) => LoginBloc(),
               child: BlocListener<LoginBloc, LoginState>(
+
                 child: SingleChildScrollView(
                   child: Container(
                     height: MediaQuery.of(context).size.height,
@@ -157,8 +159,8 @@ class _SigninState extends State<Signin> {
                               height: 46,
                               color: Color(0xff5DB5C1),
                               onPressed: () {
-                                print(emailController.value.text);
-                                print(passwordController.value.text);
+                                // print(emailController.value.text);
+                                // print(passwordController.value.text);
                                 if (_formKey.currentState.validate()) {
                                   _loginBloc.add(SigninEmailEvent(
                                       email: emailController.value.text,
