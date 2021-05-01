@@ -1,8 +1,7 @@
+import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:calendario/splash2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'bloc/login_bloc.dart';
 
 class Login extends StatelessWidget {
   var ctx;
@@ -12,16 +11,18 @@ class Login extends StatelessWidget {
     return MaterialApp(
       title: 'Inicio de Sesión',
       home: Scaffold(
-          body: BlocProvider(
-        create: (context) => LoginBloc()..add(VerifyLoginEvent()),
-        child: BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
-            if (state is AlreadyLoggedState)
-              Navigator.of(ctx).pushReplacementNamed('/calendar');
-          },
-          child: buildLogin(ctx),
+        body: BlocProvider(
+          create: (context) => LoginBloc()..add(VerifyLoginEvent()),
+          child: BlocListener<LoginBloc, LoginState>(
+            listener: (context, state) {
+              if (state is AlreadyLoggedState) {
+                Navigator.of(ctx).pushReplacementNamed("/calendar");
+              }
+            },
+            child: buildLogin(ctx),
+          ),
         ),
-      )),
+      ),
     );
   }
 

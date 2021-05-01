@@ -34,7 +34,7 @@ class _AddEventState extends State<AddEvent> {
                 icon: Icon(Icons.save),
                 onPressed: () {
                   if (_titleController.text.isEmpty) {
-                    _scaffoldKey.currentState
+                    ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(SnackBar(
                         backgroundColor: color2,
@@ -144,9 +144,7 @@ class _AddEventState extends State<AddEvent> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 20),
                         child: Text(
-                          _isAllDay
-                              ? ''
-                              : '${selectedTime.format(context)}',
+                          _isAllDay ? '' : '${selectedTime.format(context)}',
                           style: TextStyle(color: Colors.grey[500]),
                         ),
                       ),

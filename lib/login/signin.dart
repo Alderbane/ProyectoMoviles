@@ -1,6 +1,8 @@
+import 'package:calendario/auth/user_auth_provider.dart';
 import 'package:calendario/calendar/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:calendario/login/bloc/login_bloc.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Signin extends StatefulWidget {
@@ -9,11 +11,11 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
-  LoginBloc _loginBloc = LoginBloc();
+  // LoginBloc _loginBloc = LoginBloc();
   bool _isHidden = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,202 +23,207 @@ class _SigninState extends State<Signin> {
         title: 'Material App',
         home: Scaffold(
             resizeToAvoidBottomInset: true,
-            body: BlocProvider(
-              lazy: false,
-              create: (context) => LoginBloc(),
-              child: BlocListener<LoginBloc, LoginState>(
-
-                child: SingleChildScrollView(
+            body: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xff212D40), Color(0xff1F2125)],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
                   child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xff212D40), Color(0xff1F2125)],
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: Container(
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 30,
-                            ),
-                            new Image.asset(
-                              'assets/images/calendar_icon.png',
-                              scale: 3,
-                              color: Color(0xff8BB4F8),
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    'Correo Electronico:',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 46,
-                                    child: TextFormField(
-                                      controller: emailController,
-                                      style: TextStyle(
-                                        height: 2,
-                                      ),
-                                      decoration: InputDecoration(
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.white,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.all(Radius.zero)),
-                                      ),
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return 'Please enter some text';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  )
-                                ],
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 30,
+                        ),
+                        new Image.asset(
+                          'assets/images/calendar_icon.png',
+                          scale: 3,
+                          color: Color(0xff8BB4F8),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Correo Electronico:',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  'Password:',
+                              Container(
+                                height: 46,
+                                child: TextFormField(
+                                  controller: _emailController,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    height: 2,
                                   ),
-                                ),
-                                Container(
-                                  height: 46,
-                                  child: TextFormField(
-                                    controller: passwordController,
-                                    obscureText: _isHidden,
-                                    style: TextStyle(color: Colors.white),
-                                    cursorColor: Colors.white,
-                                    decoration: InputDecoration(
-                                      fillColor: Colors.transparent,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.white,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.all(Radius.zero)),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.white,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.all(Radius.zero)),
-                                      suffix: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _isHidden = !_isHidden;
-                                          });
-                                        },
-                                        child: Icon(
-                                          Icons.visibility_off,
-                                          color: Color(0xffBCB0A1),
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
                                         ),
-                                      ),
-                                    ),
-                                    validator: (String value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter some text';
-                                      }
-                                      return null;
-                                    },
+                                        borderRadius:
+                                            BorderRadius.all(Radius.zero)),
                                   ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              minWidth: 330,
-                              height: 46,
-                              color: Color(0xff5DB5C1),
-                              onPressed: () {
-                                // print(emailController.value.text);
-                                // print(passwordController.value.text);
-                                if (_formKey.currentState.validate()) {
-                                  _loginBloc.add(SigninEmailEvent(
-                                      email: emailController.value.text,
-                                      password: passwordController.value.text));
-                                }
-                              },
-                              child: Text(
-                                'ENTRAR',
-                                style: TextStyle(fontFamily: 'AkzidenzGrotesk'),
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'Password:',
+                              style: TextStyle(
+                                color: Colors.white,
                               ),
                             ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Column(
-                              children: [
-                                Text('¿Olvidaste tu password?',
-                                    style: TextStyle(color: Colors.white)),
-                                SizedBox(
-                                  height: 90,
-                                ),
-                                Text('¿Aún no tienes cuenta?',
-                                    style: TextStyle(color: Colors.white)),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('/signup');
-                                  },
-                                  child: Text(
-                                    'REGÍSTRATE',
-                                    style: TextStyle(
+                            Container(
+                              height: 46,
+                              child: TextFormField(
+                                controller: _passwordController,
+                                obscureText: _isHidden,
+                                style: TextStyle(color: Colors.white),
+                                cursorColor: Colors.white,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.transparent,
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
                                         color: Colors.white,
-                                        decoration: TextDecoration.underline),
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.zero)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.zero)),
+                                  suffix: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _isHidden = !_isHidden;
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.visibility_off,
+                                      color: Color(0xffBCB0A1),
+                                    ),
                                   ),
                                 ),
-                              ],
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                              ),
                             )
                           ],
                         ),
-                      ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          minWidth: 330,
+                          height: 46,
+                          color: Color(0xff5DB5C1),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              try {
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(
+                                    SnackBar(
+                                      content: Text("Cargando..."),
+                                    ),
+                                  );
+                                await UserAuthProvider().emailSignIn(
+                                    _emailController.text,
+                                    _passwordController.text);
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/calendar', (route) => false);
+                                print(FirebaseAuth.instance.currentUser);
+                              } catch (e) {
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          "Hubo un problema, intentelo de nuevo"),
+                                    ),
+                                  );
+                                print(e.toString());
+                              }
+                            } else {
+                              print("Te falta algo");
+                            }
+                          },
+                          child: Text(
+                            'ENTRAR',
+                            style: TextStyle(fontFamily: 'AkzidenzGrotesk'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Column(
+                          children: [
+                            Text('¿Olvidaste tu password?',
+                                style: TextStyle(color: Colors.white)),
+                            SizedBox(
+                              height: 90,
+                            ),
+                            Text('¿Aún no tienes cuenta?',
+                                style: TextStyle(color: Colors.white)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/signup');
+                              },
+                              child: Text(
+                                'REGÍSTRATE',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ),
-                listener: (context, state) {
-                  if (state is LoginSuccessState) {
-                    // Navigator.of(context).pushReplacementNamed('/');
-
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return HomePage();
-                    }), (Route<dynamic> route) => false);
-                  }
-                },
               ),
             )));
   }

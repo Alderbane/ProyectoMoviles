@@ -5,6 +5,9 @@ import 'package:calendario/models/event.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 part 'calendar_event.dart';
 part 'calendar_state.dart';
@@ -17,7 +20,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   }
   // CalendarBloc(){};
   CalendarBloc._internal() : super(CalendarInitial());
-
+  var _calendarDB = FirebaseFirestore.instance;
+  var _id = FirebaseAuth.instance.currentUser.uid;
   Box _calendarBox = Hive.box("CalendarEvents");
   // CalendarBloc()  : super(CalendarInitial());
 
@@ -28,6 +32,14 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     if (event is SaveEvent) {
       var calendarElements = [];
       var id = _calendarBox.get("id", defaultValue: 0);
+      var a =
+          _calendarDB.collection('eventos').doc(_id).collection("Mis eventos");
+      await a.add(Evento(
+              fecha: DateTime.now(),
+              titulo: "Test feo",
+              descripcion: "magia firebase",
+              hora: "Todo el día")
+          .toMap());
       calendarElements = _calendarBox.get("calendar", defaultValue: []);
       event.evento.id = id;
       calendarElements.add(event.evento);

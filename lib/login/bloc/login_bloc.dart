@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:calendario/auth/user_auth_provider.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -13,55 +14,26 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 var credential;
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  // LoginBloc() : super(LoginInitial());
-  static final LoginBloc _booksRepository = LoginBloc._internal();
+  LoginBloc() : super(LoginInitial());
+  // static final LoginBloc _logBloc = LoginBloc._internal();
 
-  factory LoginBloc() {
-    return _booksRepository;
-  }
-  LoginBloc._internal() : super(LoginInitial());
+  // factory LoginBloc() {
+  //   return _logBloc;
+  // }
+  // LoginBloc._internal() : super(LoginInitial());
 
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    // TODO: implement mapEventToState
-    if (event is SigninEmailEvent) {
-      try {
-        yield LoginLoadingState();
-        // await _auth.signInWithEmailAndPassword(
-        //     email: event.email, password: event.password);
-        credential = await _auth.signInWithEmailAndPassword(
-            email: event.email, password: event.password);
-        print(credential.user);
-        yield LoginSuccessState();
-      } catch (e) {
-        print(e.toString());
-        yield LoginErrorState(error: "Error al hacer login: ${e.toString()}");
-      }
-    } else if (event is SignUpEvent) {
-      try {
-        yield LoginLoadingState();
-        credential = await _auth.createUserWithEmailAndPassword(
-            email: event.email, password: event.password);
-        await credential.user.updateProfile(displayName: event.name);
-        print(credential.user);
-        yield LoginSuccessState();
-      } catch (e) {
-        print(e.toString());
-        yield LoginErrorState(error: "Error al hacer login: ${e.toString()}");
-      }
-    } else if (event is VerifyLoginEvent) {
-      if (_auth.currentUser == null) {
-        print("No tiene sesion");
-        yield NotLoggedState();
-      } else {
+    if (event is VerifyLoginEvent) {
+      if (UserAuthProvider().isAlreadyLogged()) {
         print("Si tiene sesion");
         yield AlreadyLoggedState();
+      } else {
+        print("No tiene sesion");
+        yield NotLoggedState();
       }
-    } else if (event is SignoutEvent) {
-      await _auth.signOut();
-      yield SignoutSuccessState();
     }
   }
 }

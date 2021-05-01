@@ -1,9 +1,9 @@
-import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import './models/event.dart';
 import 'package:firebase_core/firebase_core.dart'; // new
 import 'package:firebase_auth/firebase_auth.dart'; // new
 import 'package:provider/provider.dart';
+import 'package:calendario/auth/user_auth_provider.dart';
 
 import 'login/login.dart'; // new
 
@@ -71,12 +71,11 @@ class Menu extends StatelessWidget {
                           style: TextStyle(color: Colors.white)),
                       color: Color(0xff33393E),
                       onPressed: () async {
-                        LoginBloc().add(SignoutEvent());
+                        UserAuthProvider().signOut();
                         Navigator.of(ctx).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (BuildContext context) {
                           return Login();
                         }), (Route<dynamic> route) => false);
-                        print(_auth.currentUser);
                       },
                     ),
                   ),

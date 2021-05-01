@@ -25,4 +25,14 @@ class Evento {
   bool isAllDay() {
     return this.hora == "Todo el día";
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'fecha': fecha,
+      'titulo': titulo,
+      'descripcion': descripcion,
+      'hora': hora,
+      'id': id
+    };
+  }
 }
