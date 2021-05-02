@@ -55,7 +55,7 @@ class _EventPageState extends State<EventPage> {
               icon: Icon(Icons.save),
               onPressed: () {
                 if (_titleController.text.isEmpty) {
-                  _scaffoldKey.currentState
+                  ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
                     ..showSnackBar(SnackBar(
                       backgroundColor: color2,

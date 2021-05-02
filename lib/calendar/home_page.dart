@@ -1,10 +1,8 @@
 import 'package:calendario/calendar/bloc/calendar_bloc.dart';
-import 'package:calendario/calendar/event_page.dart';
 import 'package:calendario/menu/menu.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
 import "package:collection/collection.dart";
 
@@ -99,6 +97,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               );
             } else if (state is CalendarInitial) {
               CalendarBloc().add(LoadEvent());
+            }else if(state is CalendarLoadingState){
+              return Center(
+                      child: CircularProgressIndicator(),
+                    );
             }
             // else if (state is CalendarEditState) {
             //   List eventList = [];
@@ -285,8 +287,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
-          title: Text(e
-              .titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
+          title: Text(e.titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
           onTap: () {
             print("${e.titulo}, ${e.descripcion}");
 

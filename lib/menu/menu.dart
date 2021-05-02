@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants.dart';
-import '../models/event.dart';
-import 'package:firebase_core/firebase_core.dart'; // new
-import 'package:firebase_auth/firebase_auth.dart'; // new
-import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:calendario/auth/user_auth_provider.dart';
 
 import '../login/login.dart';
-import 'bloc/image_bloc.dart'; // new
+import 'bloc/image_bloc.dart';
 
 class Menu extends StatelessWidget {
   File selectedImage;

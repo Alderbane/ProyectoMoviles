@@ -1,8 +1,6 @@
 import 'package:calendario/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../models/event.dart';
 
 //'${selectedTime.hour}:${(selectedTime.minute<10)?"0":""}${selectedTime.minute}'
 

@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 part 'calendar_event.dart';
@@ -31,8 +30,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarEvent event,
   ) async* {
     if (event is SaveEvent) {
+      yield CalendarLoadingState();
       var calendarElements = [];
-      var myDoc = _calendarDB.collection('eventos').doc(
+      var myDoc = _calendarDB.collection('usuarios').doc(
           _id); //Conseguimos documento relacionado con en usuario actualpaint
       var id;
       await myDoc.get().then((DocumentSnapshot documentSnapshot) {
@@ -47,7 +47,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           id = 0;
       });
       print(id);
-      await myDoc.set({"currentId": id + 1}); //Se actualiza el id
+      await myDoc.update({"currentId": id + 1}); //Se actualiza el id
 
       calendarElements = _calendarBox.get("calendar",
           defaultValue: []); //Traemos todos los datos almacenados en hive
@@ -69,8 +69,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       yield CalendarEditState();
     } else if (event is UpdateEvent) {
       var calendarElements = [];
-      var misEventos = await _calendarDB
-          .collection('eventos')
+      var misEventos = _calendarDB
+          .collection('usuarios')
           .doc(_id)
           .collection('Mis eventos');
       var eventosFire =
@@ -85,7 +85,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       yield CalendarLoadedState(eventos: calendarElements);
     } else if (event is DownloadEvent) {
       var allEvents = await _calendarDB
-          .collection('eventos')
+          .collection('usuarios')
           .doc(_id)
           .collection("Mis eventos")
           .get();
@@ -96,9 +96,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       });
       await _calendarBox.put("calendar", calendarElements);
     } else if (event is DeleteEvent) {
+      yield CalendarLoadingState();
       var calendarElements = [];
-      var misEventos = await _calendarDB
-          .collection('eventos')
+      var misEventos = _calendarDB
+          .collection('usuarios')
           .doc(_id)
           .collection('Mis eventos');
       var eventosFire =
