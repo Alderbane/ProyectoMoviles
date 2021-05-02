@@ -16,6 +16,10 @@ class CalendarEditState extends CalendarState {
   @override
   List<Object> get props => [];
 }
+class CalendarLoadingState extends CalendarState {
+  @override
+  List<Object> get props => [];
+}
 
 class CalendarLoadedState extends CalendarState {
   final List eventos;

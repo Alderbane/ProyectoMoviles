@@ -3,9 +3,7 @@ import 'package:calendario/menu/menu.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
-import "package:collection/collection.dart";
 
 final Map<DateTime, List> _holidays = {
   DateTime(2020, 1, 1): ['New Year\'s Day'],
@@ -79,25 +77,14 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
         title: Text("Calendario"),
         backgroundColor: Color(0xff212D40),
       ),
-      body:Column(
-              children: [
-                _buildTableCalendarWithBuilders(),
-                const SizedBox(height: 8.0),
-                Expanded(child: _buildEventList()),
-              ],
-              mainAxisSize: MainAxisSize.max,
-            ),
-      // body: Column(
-      //   children: [
-      //     _buildTableCalendarWithBuilders(),
-      //     const SizedBox(height: 8.0),
-      //     // _buildButtons(),
-      //     // const SizedBox(height: 8.0),
-
-      //     Expanded(child: _buildEventList()),
-      //   ],
-      //   mainAxisSize: MainAxisSize.max,
-      // ),
+      body: Column(
+        children: [
+          _buildTableCalendarWithBuilders(),
+          const SizedBox(height: 8.0),
+          Expanded(child: _buildEventList()),
+        ],
+        mainAxisSize: MainAxisSize.max,
+      ),
       drawer: Drawer(
         child: Menu(),
       ),
@@ -238,7 +225,8 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
   }
 
   Widget _buildEventList() {
-    return ListView(children: _selectedEvents.map((event) {
+    return ListView(
+        children: _selectedEvents.map((event) {
       Evento e = event;
       return Container(
         decoration: BoxDecoration(
@@ -248,17 +236,14 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
-          title: Text(e
-              .titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
+          leading: Icon(
+            Icons.calendar_today_outlined,
+            size: 40,
+          ),
+          title: Text('Two-line ListTile'),
+          subtitle: Text('Here is a second line'),
           onTap: () {
-            print("${e.titulo}, ${e.descripcion}");
-
-            // Evento e = Evento(
-            //   titulo: "Entrega 1",
-            //   descripcion: "Primera entrega de web",
-            //   fecha: DateTime(2021, 02, 26),
-            //   hora: "Todo el día",
-            // );
+            // print("${e.titulo}, ${e.descripcion}");
             Navigator.of(context).pushNamed("/tarea", arguments: e);
           }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
         ),
