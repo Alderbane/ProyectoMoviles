@@ -1,7 +1,10 @@
 // import 'package:calendario/calendar/event_page.dart';
+import 'package:calendario/constants.dart';
 import 'package:calendario/menu/menu.dart';
 import 'package:calendario/models/event.dart';
+import 'package:calendario/tareas_clases/bloc/tareasclases_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -71,22 +74,42 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var ctx = context;
     return Scaffold(
       backgroundColor: Color(0xff1F2125),
       appBar: AppBar(
         title: Text("Calendario"),
         backgroundColor: Color(0xff212D40),
       ),
-      body: Column(
-        children: [
-          _buildTableCalendarWithBuilders(),
-          const SizedBox(height: 8.0),
-          Expanded(child: _buildEventList()),
-        ],
-        mainAxisSize: MainAxisSize.max,
-      ),
+      body: BlocProvider(
+          create: (context) => TareasclasesBloc()..add(GetAllEvent()),
+          child: BlocConsumer<TareasclasesBloc, TareasclasesState>(
+              listener: (context, state) {
+            if (state is LoadAllState) {
+              setState(() {
+                _events = state.eventos;
+              });
+            }
+          }, builder: (context, state) {
+            if (state is LoadingAllState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Column(
+                children: [
+                  _buildTableCalendarWithBuilders(),
+                  const SizedBox(height: 8.0),
+                  Expanded(child: _buildEventList()),
+                ],
+                mainAxisSize: MainAxisSize.max,
+              );
+            }
+          })),
       drawer: Drawer(
-        child: Menu(),
+        child: Menu(
+          ctx: ctx,
+        ),
       ),
     );
   }
@@ -105,6 +128,8 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
         CalendarFormat.week: '',
       },
       calendarStyle: CalendarStyle(
+        markersColor: color5,
+        markersMaxAmount: 4,
         outsideDaysVisible: false,
         outsideStyle: TextStyle(color: Color(0xff37383D)),
         outsideWeekendStyle: TextStyle(
@@ -143,6 +168,7 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
             ),
           );
         },
+
         todayDayBuilder: (context, date, _) {
           return Container(
             margin: const EdgeInsets.all(4.0),
@@ -156,31 +182,31 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
             ),
           );
         },
-        markersBuilder: (context, date, events, holidays) {
-          final children = <Widget>[];
+        // markersBuilder: (context, date, events, holidays) {
+        //   final children = <Widget>[];
 
-          if (events.isNotEmpty) {
-            children.add(
-              Positioned(
-                right: 1,
-                bottom: 1,
-                child: _buildEventsMarker(date, events),
-              ),
-            );
-          }
+        //   if (events.isNotEmpty) {
+        //     children.add(
+        //       Positioned(
+        //         right: 1,
+        //         bottom: 1,
+        //         child: _buildEventsMarker(date, events),
+        //       ),
+        //     );
+        //   }
 
-          if (holidays.isNotEmpty) {
-            children.add(
-              Positioned(
-                right: -2,
-                top: -2,
-                child: _buildHolidaysMarker(),
-              ),
-            );
-          }
+        //   if (holidays.isNotEmpty) {
+        //     children.add(
+        //       Positioned(
+        //         right: -2,
+        //         top: -2,
+        //         child: _buildHolidaysMarker(),
+        //       ),
+        //     );
+        //   }
 
-          return children;
-        },
+        //   return children;
+        // },
       ),
       onDaySelected: (date, events, holidays) {
         _onDaySelected(date, events, holidays);
@@ -227,27 +253,71 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
   Widget _buildEventList() {
     return ListView(
         children: _selectedEvents.map((event) {
-      Evento e = event;
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 0.8),
-          color: Color(0xff5DB5C1),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: ListTile(
-          leading: Icon(
-            Icons.calendar_today_outlined,
-            size: 40,
-          ),
-          title: Text('Two-line ListTile'),
-          subtitle: Text('Here is a second line'),
-          onTap: () {
-            // print("${e.titulo}, ${e.descripcion}");
-            Navigator.of(context).pushNamed("/tarea", arguments: e);
-          }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
-        ),
-      );
+      Map<String, dynamic> e = event;
+      if (e.containsKey("claseid")) {
+        return _buildHWcontainer(e);
+      } else {
+        return _buildClassContainer(e);
+      }
     }).toList());
+  }
+
+  Widget _buildHWcontainer(Map<String, dynamic> event) {
+    List horaList = event["hora"].split(":");
+    TimeOfDay time =
+        TimeOfDay(hour: int.parse(horaList[0]), minute: int.parse(horaList[1]));
+    return Container(
+      decoration: BoxDecoration(
+        // border: Border.all(width: 0.8),
+        // color: Color(0xff5DB5C1),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: ListTile(
+        leading: Icon(
+          Icons.assignment,
+          size: 40,
+          color: color5,
+        ),
+        title: Text('${event["clase"]}',
+            style: TextStyle(
+              color: color5,
+            )),
+        subtitle: Text('Fecha limite hoy a las ${time.format(context)}',
+            style: TextStyle(color: Colors.white, fontSize: 16)),
+        onTap: () {
+          // print("${e.titulo}, ${e.descripcion}");
+          Navigator.of(context).pushNamed("/tarea", arguments: event);
+        }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
+      ),
+    );
+  }
+
+  Widget _buildClassContainer(Map<String, dynamic> event) {
+    List horaList = event["hora"].split(":");
+    TimeOfDay time =
+        TimeOfDay(hour: int.parse(horaList[0]), minute: int.parse(horaList[1]));
+    return Container(
+      decoration: BoxDecoration(
+        // border: Border.all(width: 0.8),
+        // color: Color(0xff5DB5C1),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: ListTile(
+        leading: Icon(
+          Icons.calendar_today_outlined,
+          size: 40,
+          color: color5,
+        ),
+        title: Text('${event["nombre"]}', style: TextStyle(color: color5)),
+        subtitle: Text('CLASE COMIENZA A LAS ${time.format(context)}',
+            style: TextStyle(color: Colors.white, fontSize: 15)),
+        onTap: () {
+          // print("${e.titulo}, ${e.descripcion}");
+          // Navigator.of(context).pushNamed("/tarea", arguments: event);
+        }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
+      ),
+    );
   }
 }

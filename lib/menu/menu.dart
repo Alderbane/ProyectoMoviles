@@ -74,14 +74,20 @@ class Menu extends StatelessWidget {
                             style: TextStyle(color: Colors.white)),
                         leading:
                             Icon(Icons.calendar_today, color: Colors.white),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(this.ctx)
+                              .pushReplacementNamed("/calendar");
+                        },
                       ),
                       ListTile(
                         title: Text("Clases & Tareas",
                             style: TextStyle(color: Colors.white)),
                         leading: Icon(Icons.home, color: Colors.white),
                         onTap: () {
-                          Navigator.of(this.ctx).pushNamed("/clases");
+                          Navigator.of(context).pop();
+                          Navigator.of(this.ctx)
+                              .pushReplacementNamed("/clases");
                         },
                       ),
                       ListTile(

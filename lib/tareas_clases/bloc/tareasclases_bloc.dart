@@ -21,30 +21,66 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
     TareasclasesEvent event,
   ) async* {
     if (event is GetAllEvent) {
+      yield LoadingAllState();
       var myUserDoc = await FirebaseFirestore.instance
           .collection("usuarios")
           .doc(_auth.currentUser.uid)
           .get();
       var clasesCollection = FirebaseFirestore.instance.collection("clases");
       var tareasCollection = FirebaseFirestore.instance.collection("tareas");
-      Map<DateTime, List<dynamic>> events;
-      List<String> clasesIds = myUserDoc.data()["clases"];
-      List<Map<String, dynamic>> clases;
-      List<Map<String, dynamic>> tareas;
-      var placeholder = groupBy(tareas, (tarea) => tarea["fecha"]);
-      Map<DateTime, dynamic> mp;
-      clasesIds.forEach((element) async {
+      Map<DateTime, List<dynamic>> events = {};
+      List<dynamic> clasesIds = myUserDoc.data()["clases"];
+      List<Map<String, dynamic>> clases = [];
+      List<Map<String, dynamic>> tareas = [];
+
+      for (var element in clasesIds) {
         var doc = await clasesCollection.doc(element).get();
         clases.add(doc.data());
         var query =
-            await tareasCollection.where("claseId", isEqualTo: element).get();
+            await tareasCollection.where("claseid", isEqualTo: element).get();
         query.docs.forEach((element) {
-          tareas.add(element.data());
+          var temp = element.data();
+          temp["clase"] = doc.data()["nombre"];
+          tareas.add(temp);
+        });
+      }
+
+      // clasesIds.forEach((element) async {
+      //   var doc = await clasesCollection.doc(element).get();
+      //   clases.add(doc.data());
+      //   var query =
+      //       await tareasCollection.where("claseid", isEqualTo: element).get();
+      //   print("a");
+      //   query.docs.forEach((element) {
+      //     tareas.add(element.data());
+      //   });
+      // });
+      clases.forEach((clase) {
+        clase["dias"].forEach((weekday) {
+          var temp =
+              createByPeriodYear(clase["año"], clase["tipo"], weekday, clase);
+          temp.forEach((key, value) {
+            if (events.containsKey(key)) {
+              events[key].add(value);
+            } else {
+              events[key] = [value];
+            }
+          });
         });
       });
-      clases.forEach((clase) {
-        clase["dias"].forEach((weekday) {});
+      tareas.forEach((element) {
+        var temp = DateTime.fromMicrosecondsSinceEpoch(
+            element['fecha'].microsecondsSinceEpoch);
+        print("------------Temp-------------");
+        print(temp);
+        element['fecha'] = DateTime(temp.year, temp.month, temp.day);
+        if (events.containsKey(element['fecha'])) {
+          events[element['fecha']].add(element);
+        } else {
+          events[element['fecha']] = [element];
+        }
       });
+      yield (LoadAllState(eventos: events));
     }
   }
 
@@ -52,15 +88,15 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
       int year, int period, int weekday, Map<String, dynamic> object) {
     //semanas 16
     DateTime initial;
-    Map<DateTime, dynamic> map;
-    if (period == Periodo.primavera) {
+    Map<DateTime, dynamic> map = {};
+    if (period == 0) {
       //inicio : 15 enero
-      initial = DateTime(year, 1, 15);
-    } else if (period == Periodo.otonio) {
+      initial = DateTime(year, DateTime.january, 15);
+    } else if (period == 1) {
       //inicio: 13 agosto
-      initial = DateTime(year, DateTime.august, 15);
+      initial = DateTime(year, DateTime.august, 13);
     }
-
+    print(initial);
     if (initial.weekday >= 4) {
       initial = initial.add(Duration(days: 8 - initial.weekday));
     } else {
@@ -70,7 +106,8 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
     initial = initial.add(Duration(days: weekday - 1));
 
     for (var i = 0; i < 16; i++) {
-      map[initial.add(Duration(days: 7 * i))] = object;
+      var temp = initial.add(Duration(days: 7 * i));
+      map[DateTime(temp.year, temp.month, temp.day)] = object;
     }
     return map;
   }

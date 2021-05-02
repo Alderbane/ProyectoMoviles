@@ -10,9 +10,14 @@ abstract class TareasclasesState extends Equatable {
 class TareasclasesInitial extends TareasclasesState {}
 
 class LoadAllState extends TareasclasesState {
-  final List eventos;
+  final Map<DateTime, List<dynamic>> eventos;
 
   LoadAllState({@required this.eventos});
   @override
   List<Object> get props => [eventos];
+}
+
+class LoadingAllState extends TareasclasesState {
+  @override
+  List<Object> get props => [];
 }
