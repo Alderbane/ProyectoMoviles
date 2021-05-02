@@ -1,6 +1,6 @@
 import 'package:calendario/calendar/bloc/calendar_bloc.dart';
 import 'package:calendario/calendar/event_page.dart';
-import 'package:calendario/menu.dart';
+import 'package:calendario/menu/menu.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
