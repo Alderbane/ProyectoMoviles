@@ -14,14 +14,14 @@ part 'image_event.dart';
 part 'image_state.dart';
 
 class ImageBloc extends Bloc<ImageEvent, ImageState> {
-  // ImageBloc() : super(ImageInitial());
-   static final ImageBloc _booksRepository = ImageBloc._internal();
+  ImageBloc() : super(ImageInitial());
+  //  static final ImageBloc _booksRepository = ImageBloc._internal();
 
-  factory ImageBloc() {
-    return _booksRepository;
-  }
-  // ImageBloc(){};
-  ImageBloc._internal() : super(ImageInitial());
+  // factory ImageBloc() {
+  //   return _booksRepository;
+  // }
+  // // ImageBloc(){};
+  // ImageBloc._internal() : super(ImageInitial());
 
   @override
   Stream<ImageState> mapEventToState(
