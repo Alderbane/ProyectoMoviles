@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class UserAuthProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,6 +20,8 @@ class UserAuthProvider {
         .user;
     await user.updateProfile(displayName: name);
     await user.reload();
+    String notificationToken = await FirebaseMessaging.instance.getToken();
+    FirebaseFirestore.instance.collection('usuarios').doc(_auth.currentUser.uid).update({"token": notificationToken});
   }
 
   Future<void> emailSignIn(String email, String password) async {
@@ -25,5 +29,8 @@ class UserAuthProvider {
             email: email.trim(), password: password.trim()))
         .user;
     await user.reload();
+    String notificationToken = await FirebaseMessaging.instance.getToken();
+    FirebaseFirestore.instance.collection('usuarios').doc(_auth.currentUser.uid).update({"token": notificationToken});
+    
   }
 }
