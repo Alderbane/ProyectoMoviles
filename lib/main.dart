@@ -19,7 +19,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:calendario/models/event.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:http/http.dart' as http;
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -126,22 +126,5 @@ class _MyAppState extends State<MyApp> {
     await _localNotifications.show(0, titulo, mensaje, platformDetails);
   }
 
-  void _sendMessage(String destination, String title, String body) {
-    var url = Uri.parse("https://fcm.googleapis.com/fcm/send");
-    http.post(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization":
-            "key=AAAAPcBRBrE:APA91bFh_ChbFE-a1Y82N3dVrClrMWuIk_zwT972kWIzzmA5Kf9TRFnja-8GeOHv5yMvbPfMzzKNLlRmqape4Z6XjhPa8UaFKMy_Ws8BAelZciPz9IEipt-hmzOpSYtq5vm_n_3v1UEw",
-      },
-      body: {
-        "to": destination,
-        "notification": {
-          "title": title,
-          "body": body,
-        }
-      },
-    );
-  }
+  
 }
