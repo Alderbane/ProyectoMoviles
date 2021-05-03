@@ -4,6 +4,7 @@ import 'package:calendario/calendar/add_event.dart';
 import 'package:calendario/calendar/event_details.dart';
 import 'package:calendario/calendar/event_page.dart';
 import 'package:calendario/calendar/home_page.dart';
+import 'package:calendario/calificaciones/calificaciones.dart';
 import 'package:calendario/login/login.dart';
 import 'package:calendario/login/signin.dart';
 import 'package:calendario/login/signup.dart';
@@ -74,7 +75,8 @@ class _MyAppState extends State<MyApp> {
         "/addEvent": (context) => AddEvent(),
         "/eventPage": (context) => EventPage(),
         "/tarea": (context) => Tarea(),
-        "/clases": (context) => Clases()
+        "/clases": (context) => Clases(),
+        "/calificaciones": (context)=> Calificaciones(),
       },
     );
   }

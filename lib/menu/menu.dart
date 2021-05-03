@@ -95,7 +95,11 @@ class Menu extends StatelessWidget {
                             style: TextStyle(color: Colors.white)),
                         leading: Icon(Icons.assignment_turned_in,
                             color: Colors.white),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(this.ctx)
+                              .pushReplacementNamed("/calificaciones");
+                        },
                       ),
                     ],
                   ),

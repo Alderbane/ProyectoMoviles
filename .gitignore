@@ -1,3 +1,6 @@
+/android/app/google-services.json
+android/app/src/main/AndroidManifest.xml
+
 # Miscellaneous
 *.class
 *.log
