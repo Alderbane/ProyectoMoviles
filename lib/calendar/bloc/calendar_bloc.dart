@@ -12,18 +12,19 @@ part 'calendar_event.dart';
 part 'calendar_state.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
-  static final CalendarBloc _booksRepository = CalendarBloc._internal();
+  // static final CalendarBloc _booksRepository = CalendarBloc._internal();
 
-  factory CalendarBloc() {
-    return _booksRepository;
-  }
-  // CalendarBloc(){};
-  CalendarBloc._internal() : super(CalendarInitial());
+  // factory CalendarBloc() {
+  //   return _booksRepository;
+  // }
+  // // CalendarBloc(){};
+  // CalendarBloc._internal() : super(CalendarInitial());
+
   var _calendarDB = FirebaseFirestore.instance;
   var _id = FirebaseAuth.instance.currentUser.uid;
   Box _calendarBox = Hive.box("CalendarEvents");
   // int _eventId = 0;
-  // CalendarBloc()  : super(CalendarInitial());
+  CalendarBloc() : super(CalendarInitial());
 
   @override
   Stream<CalendarState> mapEventToState(
@@ -37,17 +38,15 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       var id;
       await myDoc.get().then((DocumentSnapshot documentSnapshot) {
         //tomamos documento que mantiene el id
+        id = 0;
         if (documentSnapshot.exists) {
-          print("existe");
           if (documentSnapshot.data()['currentId'] != null)
             id = documentSnapshot.data()['currentId'];
-          else
-            id = 0;
-        } else
-          id = 0;
+        }
       });
       print(id);
-      await myDoc.update({"currentId": id + 1}); //Se actualiza el id
+      await myDoc.set(
+          {"currentId": id + 1}, SetOptions(merge: true)); //Se actualiza el id
 
       calendarElements = _calendarBox.get("calendar",
           defaultValue: []); //Traemos todos los datos almacenados en hive
@@ -69,13 +68,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       yield CalendarEditState();
     } else if (event is UpdateEvent) {
       var calendarElements = [];
-      var misEventos = _calendarDB
-          .collection('usuarios')
-          .doc(_id)
-          .collection('Mis eventos');
+      var misEventos =
+          _calendarDB.collection('usuarios').doc(_id).collection('Mis eventos');
       var eventosFire =
           await misEventos.where('id', isEqualTo: event.evento.id).get();
-      await misEventos.doc(eventosFire.docs[0].id).update(event.evento.toMap());
+      await misEventos
+          .doc(eventosFire.docs[0].id)
+          .set(event.evento.toMap(), SetOptions(merge: true));
 
       calendarElements = _calendarBox.get("calendar");
       int i = calendarElements
@@ -95,13 +94,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         // if(6_eventId < element.data()[])
       });
       await _calendarBox.put("calendar", calendarElements);
+      yield CalendarLoadedState(eventos: calendarElements);
     } else if (event is DeleteEvent) {
       yield CalendarLoadingState();
       var calendarElements = [];
-      var misEventos = _calendarDB
-          .collection('usuarios')
-          .doc(_id)
-          .collection('Mis eventos');
+      var misEventos =
+          _calendarDB.collection('usuarios').doc(_id).collection('Mis eventos');
       var eventosFire =
           await misEventos.where('id', isEqualTo: event.evento.id).get();
       await misEventos.doc(eventosFire.docs[0].id).delete();

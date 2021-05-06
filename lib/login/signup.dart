@@ -194,7 +194,7 @@ class _SignupState extends State<Signup> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
@@ -204,7 +204,7 @@ class _SignupState extends State<Signup> {
                                 ),
                               );
                             try {
-                              UserAuthProvider().emailSignUp(
+                              await UserAuthProvider().emailSignUp(
                                   _nameController.text,
                                   _emailController.text,
                                   _pwdController.text);

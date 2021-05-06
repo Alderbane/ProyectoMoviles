@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Map<DateTime, List> _events = {};
   DateTime _currentDate;
   DateTime selectedDate;
+  var calendarBloc = CalendarBloc();
 
   @override
   void initState() {
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         backgroundColor: Color(0xff212D40),
       ),
       body: BlocProvider(
-        create: (context) => CalendarBloc()..add(DownloadEvent()),
+        create: (context) => calendarBloc..add(DownloadEvent()),
         child: BlocBuilder<CalendarBloc, CalendarState>(
           builder: (context, state) {
             if (state is CalendarLoadedState) {
@@ -96,11 +97,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 mainAxisSize: MainAxisSize.max,
               );
             } else if (state is CalendarInitial) {
-              CalendarBloc().add(LoadEvent());
-            }else if(state is CalendarLoadingState){
+              calendarBloc.add(LoadEvent());
+            } else if (state is CalendarLoadingState) {
               return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                child: CircularProgressIndicator(),
+              );
             }
             // else if (state is CalendarEditState) {
             //   List eventList = [];
@@ -287,7 +288,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
-          title: Text(e.titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
+          title: Text(e
+              .titulo), //Este texto contendrá el título del evento en un objeto relacionado con la variable _events
           onTap: () {
             print("${e.titulo}, ${e.descripcion}");
 
@@ -319,5 +321,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
     return ListView(children: list);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    calendarBloc.close();
+    super.dispose();
   }
 }
