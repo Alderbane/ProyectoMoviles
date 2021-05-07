@@ -1,7 +1,7 @@
-import 'package:calendario/login/bloc/login_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:calendario/login/signin.dart';
+import 'package:calendario/login/signup.dart';
+import 'package:flutter/material.dart';
 class Login extends StatelessWidget {
   var ctx;
   @override
@@ -10,17 +10,7 @@ class Login extends StatelessWidget {
     return MaterialApp(
       title: 'Inicio de Sesión',
       home: Scaffold(
-        body: BlocProvider(
-          create: (context) => LoginBloc()..add(VerifyLoginEvent()),
-          child: BlocListener<LoginBloc, LoginState>(
-            listener: (context, state) {
-              if (state is AlreadyLoggedState) {
-                Navigator.of(ctx).pushReplacementNamed("/calendar");
-              }
-            },
-            child: buildLogin(ctx),
-          ),
-        ),
+        body: buildLogin(ctx)
       ),
     );
   }
@@ -58,7 +48,7 @@ class Login extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed('/signup');
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => Signup()));
               },
               child: Text(
                 'REGISTRATE',
@@ -76,7 +66,7 @@ class Login extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed('/signin');
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => Signin()));
               },
               child: Text(
                 'INGRESA',

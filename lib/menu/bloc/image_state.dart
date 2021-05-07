@@ -10,10 +10,9 @@ abstract class ImageState extends Equatable {
 class ImageInitial extends ImageState {}
 
 class ImageUpdatedState extends ImageState {
-  final File image;
+  final String image;
 
   ImageUpdatedState({@required this.image});
   
   List<Object> get props => [image];
 }
-

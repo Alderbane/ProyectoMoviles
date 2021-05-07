@@ -22,9 +22,11 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   // }
   // // CalendarBloc(){};
   // CalendarBloc._internal() : super(CalendarInitial());
+  
 
   var _calendarDB = FirebaseFirestore.instance;
-  var _id = FirebaseAuth.instance.currentUser.uid;
+
+  var _id = (FirebaseAuth.instance.currentUser!=null)?FirebaseAuth.instance.currentUser.uid:"nouid";
   Box _calendarBox = Hive.box("CalendarEvents");
   // int _eventId = 0;
   CalendarBloc() : super(CalendarInitial());

@@ -10,7 +10,8 @@ import '../constants.dart';
 //     initializeDateFormatting('esMX', null).then((_) => runApp(EventPage()));
 
 class EventPage extends StatefulWidget {
-  EventPage({Key key}) : super(key: key);
+  final Evento evento;
+  EventPage({Key key, @required this.evento}) : super(key: key);
 
   @override
   _EventPageState createState() => _EventPageState();
@@ -25,12 +26,13 @@ class _EventPageState extends State<EventPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 0);
+
   bool _isAllDay;
   bool flag = false;
   @override
   Widget build(BuildContext context) {
-    event = ModalRoute.of(context).settings.arguments;
-
+    // event = ModalRoute.of(context).settings.arguments;
+    event = widget.evento;
     // Data controllers
     if (!flag) {
       _titleController.text = event.titulo ?? "";

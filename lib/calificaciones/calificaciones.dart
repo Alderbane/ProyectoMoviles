@@ -70,10 +70,6 @@ class _CalificacionesState extends State<Calificaciones> {
           subtitle: Text(
               'CALIFICACION: ${(e["calificacion"] != 0) ? e["calificacion"] : "N/A"}%',
               style: TextStyle(color: Colors.white, fontSize: 15)),
-          onTap: () {
-            // print("${e.titulo}, ${e.descripcion}");
-            // Navigator.of(context).pushNamed("/tarea", arguments: event);
-          }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
         ),
       );
     }).toList());

@@ -5,6 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:calendario/calendar/bloc/calendar_bloc.dart';
 
 class AddEvent extends StatefulWidget {
+  final DateTime date;
+
+  const AddEvent({Key key, this.date}) : super(key: key);
   @override
   _AddEventState createState() => _AddEventState();
 }
@@ -24,7 +27,9 @@ class _AddEventState extends State<AddEvent> {
   @override
   Widget build(BuildContext context) {
     if (!loadedDate) {
-      DateTime transferDate = ModalRoute.of(context).settings.arguments;
+      // DateTime transferDate = ModalRoute.of(context).settings.arguments;
+      DateTime transferDate = widget.date;
+
       if (transferDate != null)
         selectedDate =
             DateTime(transferDate.year, transferDate.month, transferDate.day);

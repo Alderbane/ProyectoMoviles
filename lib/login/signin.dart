@@ -1,6 +1,9 @@
+import 'package:calendario/auth/bloc/auth_bloc.dart';
 import 'package:calendario/auth/user_auth_provider.dart';
+import 'package:calendario/login/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class Signin extends StatefulWidget {
@@ -154,35 +157,38 @@ class _SigninState extends State<Signin> {
                           height: 46,
                           color: Color(0xff5DB5C1),
                           onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              try {
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(
-                                    SnackBar(
-                                      content: Text("Cargando..."),
-                                    ),
-                                  );
-                                await UserAuthProvider().emailSignIn(
-                                    _emailController.text,
-                                    _passwordController.text);
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    '/calendar', (route) => false);
-                                print(FirebaseAuth.instance.currentUser);
-                              } catch (e) {
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          "Hubo un problema, intentelo de nuevo"),
-                                    ),
-                                  );
-                                print(e.toString());
-                              }
-                            } else {
-                              print("Te falta algo");
-                            }
+                            BlocProvider.of<AuthBloc>(context).add(SignInAuthenticationEvent(password: _passwordController.text,user: _emailController.text));
+
+
+                            // if (_formKey.currentState.validate()) {
+                            //   try {
+                            //     ScaffoldMessenger.of(context)
+                            //       ..hideCurrentSnackBar()
+                            //       ..showSnackBar(
+                            //         SnackBar(
+                            //           content: Text("Cargando..."),
+                            //         ),
+                            //       );
+                            //     await UserAuthProvider().emailSignIn(
+                            //         _emailController.text,
+                            //         _passwordController.text);
+                            //     Navigator.of(context).pushNamedAndRemoveUntil(
+                            //         '/calendar', (route) => false);
+                            //     print(FirebaseAuth.instance.currentUser);
+                            //   } catch (e) {
+                            //     ScaffoldMessenger.of(context)
+                            //       ..hideCurrentSnackBar()
+                            //       ..showSnackBar(
+                            //         SnackBar(
+                            //           content: Text(
+                            //               "Hubo un problema, intentelo de nuevo"),
+                            //         ),
+                            //       );
+                            //     print(e.toString());
+                            //   }
+                            // } else {
+                            //   print("Te falta algo");
+                            // }
                           },
                           child: Text(
                             'ENTRAR',
@@ -207,7 +213,7 @@ class _SigninState extends State<Signin> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.of(context)
-                                    .pushReplacementNamed('/signup');
+                                    .pushReplacement(MaterialPageRoute(builder: (_) => Signup()));
                               },
                               child: Text(
                                 'REGÍSTRATE',

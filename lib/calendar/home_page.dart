@@ -1,4 +1,6 @@
+import 'package:calendario/calendar/add_event.dart';
 import 'package:calendario/calendar/bloc/calendar_bloc.dart';
+import 'package:calendario/calendar/event_details.dart';
 import 'package:calendario/menu/menu.dart';
 import 'package:calendario/models/event.dart';
 import 'package:flutter/material.dart';
@@ -103,16 +105,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: CircularProgressIndicator(),
               );
             }
-            // else if (state is CalendarEditState) {
-            //   List eventList = [];
-            //   _events.forEach((key, value) {
-            //     value.forEach((element) {
-            //       eventList.add(element);
-            //     });
-            //   });
-
-            //   CalendarBloc().add(UpdateEvent(eventos: eventList));
-            // }
 
             return Column(
               children: [
@@ -299,7 +291,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             //   fecha: DateTime(2021, 02, 26),
             //   hora: "Todo el día",
             // );
-            Navigator.of(context).pushNamed("/eventDetail", arguments: e);
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => EventDetails(evento: event,)));
           }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
         ),
       );
@@ -314,9 +306,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
           title: Text("+ Agregar evento"),
-          onTap: () => Navigator.of(context).pushNamed("/addEvent",
-              arguments:
-                  selectedDate), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddEvent(date: selectedDate))), //Genera un dialog el cual recibe el día en el que fue seleccionado agregar evento, en este se puede cambiar el día del mismo y agregar los detalles a fondo sobre este
         ),
       ),
     );
@@ -325,7 +315,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     calendarBloc.close();
     super.dispose();
   }

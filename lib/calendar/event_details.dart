@@ -1,4 +1,5 @@
 import 'package:calendario/calendar/bloc/calendar_bloc.dart';
+import 'package:calendario/calendar/event_page.dart';
 import 'package:calendario/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,8 @@ import 'package:intl/intl.dart';
 import '../models/event.dart';
 
 class EventDetails extends StatefulWidget {
-  EventDetails({Key key}) : super(key: key);
+  final Evento evento;
+  EventDetails({Key key, @required this.evento}) : super(key: key);
 
   @override
   _EventDetailsState createState() => _EventDetailsState();
@@ -17,7 +19,8 @@ class _EventDetailsState extends State<EventDetails> {
 
   @override
   Widget build(BuildContext context) {
-    event = ModalRoute.of(context).settings.arguments;
+    event = widget.evento;
+    // event = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Evento"),
@@ -33,7 +36,7 @@ class _EventDetailsState extends State<EventDetails> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              Navigator.of(context).pushNamed("/eventPage", arguments: event);
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => EventPage(evento: event,)));
             },
           ),
         ],

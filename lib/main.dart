@@ -1,17 +1,11 @@
 import 'dart:io';
 
-import 'package:calendario/calendar/add_event.dart';
-import 'package:calendario/calendar/event_details.dart';
-import 'package:calendario/calendar/event_page.dart';
-import 'package:calendario/calendar/home_page.dart';
 import 'package:calendario/calificaciones/calificaciones.dart';
 import 'package:calendario/login/login.dart';
-import 'package:calendario/login/signin.dart';
-import 'package:calendario/login/signup.dart';
 import 'package:calendario/splash2.dart';
 import 'package:calendario/tareas_clases/clases.dart';
-import 'package:calendario/tareas_clases/tarea.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:hive/hive.dart';
@@ -20,6 +14,8 @@ import 'package:calendario/models/event.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'auth/bloc/auth_bloc.dart';
+import 'calendar/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +26,13 @@ void main() async {
   await Hive.openBox("CalendarEvents");
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  initializeDateFormatting('es_MX').then((_) => runApp(MyApp()));
+  initializeDateFormatting('es_MX').then((_) => runApp(
+        BlocProvider(
+          lazy: false,
+          create: (context) => AuthBloc()..add(VerifyAuthenticationEvent()),
+          child: MyApp(),
+        ),
+      ));
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -65,20 +67,21 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'School Calendar',
-      initialRoute: '/login',
-      routes: {
-        "/splash": (context) => Splash2(),
-        "/calendar": (context) => HomePage(),
-        "/login": (context) => Login(),
-        "/signin": (context) => Signin(),
-        "/signup": (context) => Signup(),
-        "/eventDetail": (context) => EventDetails(),
-        "/addEvent": (context) => AddEvent(),
-        "/eventPage": (context) => EventPage(),
-        "/tarea": (context) => Tarea(),
-        "/clases": (context) => Clases(),
-        "/calificaciones": (context)=> Calificaciones(),
-      },
+      home: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AlreadyAuthState) {
+            (Navigator.of(context).canPop())
+                ? Navigator.of(context).pop()
+                : null;
+            return HomePage();
+          }
+          if (state is UnAuthState) return Login();
+          if(state is GoToClasesState) return Clases();
+          if(state is GoToCalificacionesState) return Calificaciones();
+          if(state is GoToCalendarioState) return HomePage();
+          return Splash2();
+        },
+      ),
     );
   }
 
@@ -97,7 +100,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     String fcmToken = await FirebaseMessaging.instance.getToken();
-    print("TOKEN FCM >>> $fcmToken");
+    // print("TOKEN FCM >>> $fcmToken");
   }
 
   void _configureLocalNotifications() {
@@ -125,6 +128,4 @@ class _MyAppState extends State<MyApp> {
     );
     await _localNotifications.show(0, titulo, mensaje, platformDetails);
   }
-
-  
 }

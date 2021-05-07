@@ -1,4 +1,6 @@
 import 'package:calendario/auth/user_auth_provider.dart';
+import 'package:calendario/calendar/home_page.dart';
+import 'package:calendario/login/signin.dart';
 // import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -208,8 +210,8 @@ class _SignupState extends State<Signup> {
                                   _nameController.text,
                                   _emailController.text,
                                   _pwdController.text);
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/calendar', (route) => false);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (_) => HomePage()), (route) => false);
                             } catch (e) {
                               print(e.toString());
                               ScaffoldMessenger.of(context)
@@ -245,7 +247,7 @@ class _SignupState extends State<Signup> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context)
-                                  .pushReplacementNamed('/signin');
+                                  .pushReplacement(MaterialPageRoute(builder: (_) => Signin()));
                             },
                             child: Text(
                               'INGRESA',

@@ -28,14 +28,15 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     ImageEvent event,
   ) async* {
     if(event is GetImageEvent){
-      File img;
+      String img;
       img = await downloadFile();
     yield ImageUpdatedState(image: img);
     }else if(event is ChangeImageEvent){
+      String imgURL;
       File img = await _pickImage();
-      print(img);
       await uploadFile(img);
-      yield ImageUpdatedState(image: img);
+      imgURL = await downloadFile();
+      yield ImageUpdatedState(image: imgURL);
     }
   }
 }
@@ -63,15 +64,13 @@ Future<void> uploadFile(File file) async {
 }
 
 
-Future<File> downloadFile() async {
-  Directory appDocDir = await getApplicationDocumentsDirectory();
-  File downloadToFile = File('${appDocDir.path}/avatar.jpg');
-
+Future<String> downloadFile() async {
+  String img;
   try {
-    await firebase_storage.FirebaseStorage.instance
-        .ref('${FirebaseAuth.instance.currentUser.uid}/avatar.jpg')
-        .writeToFile(downloadToFile);
-      return downloadToFile;
+    print(FirebaseAuth.instance.currentUser.uid);
+    img = await firebase_storage.FirebaseStorage.instance
+        .ref('${FirebaseAuth.instance.currentUser.uid}/avatar.jpg').getDownloadURL();
+      return img;
   } on firebase_core.FirebaseException catch (e) {
     return null;
     // e.g, e.code == 'canceled'

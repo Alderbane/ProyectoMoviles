@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 //'${selectedTime.hour}:${(selectedTime.minute<10)?"0":""}${selectedTime.minute}'
 
 class Tarea extends StatefulWidget {
-  Tarea({Key key}) : super(key: key);
+  final evento;
+  Tarea({Key key, @required this.evento}) : super(key: key);
 
   @override
   _TareaState createState() => _TareaState();
@@ -16,7 +17,8 @@ class _TareaState extends State<Tarea> {
 
   @override
   Widget build(BuildContext context) {
-    event = ModalRoute.of(context).settings.arguments;
+    // event = ModalRoute.of(context).settings.arguments;
+    event = widget.evento;
     List horaList = event["hora"].split(":");
     TimeOfDay time =
         TimeOfDay(hour: int.parse(horaList[0]), minute: int.parse(horaList[1]));

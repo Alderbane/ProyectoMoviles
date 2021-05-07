@@ -3,6 +3,7 @@ import 'package:calendario/constants.dart';
 import 'package:calendario/menu/menu.dart';
 import 'package:calendario/models/event.dart';
 import 'package:calendario/tareas_clases/bloc/tareasclases_bloc.dart';
+import 'package:calendario/tareas_clases/tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
@@ -287,7 +288,7 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
             style: TextStyle(color: Colors.white, fontSize: 16)),
         onTap: () {
           // print("${e.titulo}, ${e.descripcion}");
-          Navigator.of(context).pushNamed("/tarea", arguments: event);
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => Tarea(evento: event)));
         }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
       ),
     );
@@ -313,10 +314,6 @@ class _ClasesState extends State<Clases> with TickerProviderStateMixin {
         title: Text('${event["nombre"]}', style: TextStyle(color: color5)),
         subtitle: Text('CLASE COMIENZA A LAS ${time.format(context)}',
             style: TextStyle(color: Colors.white, fontSize: 15)),
-        onTap: () {
-          // print("${e.titulo}, ${e.descripcion}");
-          // Navigator.of(context).pushNamed("/tarea", arguments: event);
-        }, //Redirecciona a nuevo widget el cual cuenta con los detalles del evento de ese día
       ),
     );
   }
