@@ -26,16 +26,18 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
     if (event is GetAllEvent) {
       yield LoadingAllState();
       var today = DateTime.now();
-      var token = await FirebaseFirestore.instance.collection('usuarios').doc(_auth.currentUser.uid).get().then( 
+      var token = await FirebaseFirestore.instance
+          .collection('usuarios')
+          .doc(_auth.currentUser.uid)
+          .get()
+          .then(
         (DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          return documentSnapshot.data()["token"];
-        }else{
-        
-        }
-        }
+          if (documentSnapshot.exists) {
+            return documentSnapshot.data()["token"];
+          }
+        },
       );
-      today = DateTime(today.year,today.month,today.day);
+      today = DateTime(today.year, today.month, today.day);
       var myUserDoc = await FirebaseFirestore.instance
           .collection("usuarios")
           .doc(_auth.currentUser.uid)
@@ -89,10 +91,11 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
         print(temp);
         element['fecha'] = DateTime(temp.year, temp.month, temp.day);
 
-        if(today.compareTo(element["fecha"]) == 0){
-           List horaList = element["hora"].split(":");
-          _sendMessage(token,'${element["nombre"]}',"${new DateFormat.yMMMMEEEEd('es').format(element["fecha"])} en ${horaList[0]}:${(int.parse(horaList[1]) < 10 ? '0' : '')}${horaList[1]}");
-        }
+        // if (today.compareTo(element["fecha"]) == 0) {
+        //   List horaList = element["hora"].split(":");
+        //   _sendMessage(token, '${element["nombre"]}',
+        //       "${new DateFormat.yMMMMEEEEd('es').format(element["fecha"])} en ${horaList[0]}:${(int.parse(horaList[1]) < 10 ? '0' : '')}${horaList[1]}");
+        // }
 
         if (events.containsKey(element['fecha'])) {
           events[element['fecha']].add(element);
@@ -132,22 +135,22 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
     return map;
   }
 
-  void _sendMessage(String destination, String title, String body) {
-    var url = Uri.parse("https://fcm.googleapis.com/fcm/send");
-    http.post(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization":
-            "key=AAAAPcBRBrE:APA91bFh_ChbFE-a1Y82N3dVrClrMWuIk_zwT972kWIzzmA5Kf9TRFnja-8GeOHv5yMvbPfMzzKNLlRmqape4Z6XjhPa8UaFKMy_Ws8BAelZciPz9IEipt-hmzOpSYtq5vm_n_3v1UEw",
-      },
-      body: jsonEncode({
-        "to": destination,
-        "notification": {
-          "title": title,
-          "body": body,
-        }
-      }),
-    );
-  }
+  // void _sendMessage(String destination, String title, String body) {
+  //   var url = Uri.parse("https://fcm.googleapis.com/fcm/send");
+  //   http.post(
+  //     url,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization":
+  //           "key=AAAAPcBRBrE:APA91bFh_ChbFE-a1Y82N3dVrClrMWuIk_zwT972kWIzzmA5Kf9TRFnja-8GeOHv5yMvbPfMzzKNLlRmqape4Z6XjhPa8UaFKMy_Ws8BAelZciPz9IEipt-hmzOpSYtq5vm_n_3v1UEw",
+  //     },
+  //     body: jsonEncode({
+  //       "to": destination,
+  //       "notification": {
+  //         "title": title,
+  //         "body": body,
+  //       }
+  //     }),
+  //   );
+  // }
 }

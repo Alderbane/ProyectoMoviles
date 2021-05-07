@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:calendario/models/event.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 part 'calendar_event.dart';
 part 'calendar_state.dart';
@@ -83,6 +86,43 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       await _calendarBox.put("calendar", calendarElements);
       yield CalendarLoadedState(eventos: calendarElements);
     } else if (event is DownloadEvent) {
+      var token = await FirebaseFirestore.instance
+          .collection('usuarios')
+          .doc(_id)
+          .get()
+          .then(
+        (DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            return documentSnapshot.data()["token"];
+          }
+        },
+      );
+      var today = DateTime.now();
+      today = DateTime(today.year, today.month, today.day);
+      var tareasCollection = FirebaseFirestore.instance.collection("tareas");
+      var myUserDoc = await FirebaseFirestore.instance
+          .collection("usuarios")
+          .doc(_id)
+          .get();
+      List<dynamic> clasesIds = myUserDoc.data()["clases"];
+      for (var item in clasesIds) {
+        var tareasOfItem =
+            await tareasCollection.where("claseid", isEqualTo: item).get();
+        for (var tarea in tareasOfItem.docs) {
+          var element = tarea.data();
+          var temp = DateTime.fromMicrosecondsSinceEpoch(
+              element['fecha'].microsecondsSinceEpoch);
+          element['fecha'] = DateTime(temp.year, temp.month, temp.day);
+
+          if (today.compareTo(element["fecha"]) == 0) {
+            print(element["fecha"]);
+            List horaList = element["hora"].split(":");
+            _sendMessage(token, '${element["nombre"]}',
+                "${new DateFormat.yMMMMEEEEd('es').format(element["fecha"])} en ${horaList[0]}:${(int.parse(horaList[1]) < 10 ? '0' : '')}${horaList[1]}");
+          }
+        }
+      }
+      // original code
       var allEvents = await _calendarDB
           .collection('usuarios')
           .doc(_id)
@@ -112,4 +152,24 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       yield CalendarLoadedState(eventos: calendarElements);
     }
   } //
+
+  void _sendMessage(String destination, String title, String body) {
+    print("-------------------Enviando mensaje");
+    var url = Uri.parse("https://fcm.googleapis.com/fcm/send");
+    http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "key=AAAAPcBRBrE:APA91bFh_ChbFE-a1Y82N3dVrClrMWuIk_zwT972kWIzzmA5Kf9TRFnja-8GeOHv5yMvbPfMzzKNLlRmqape4Z6XjhPa8UaFKMy_Ws8BAelZciPz9IEipt-hmzOpSYtq5vm_n_3v1UEw",
+      },
+      body: jsonEncode({
+        "to": destination,
+        "notification": {
+          "title": title,
+          "body": body,
+        }
+      }),
+    );
+  }
 }
