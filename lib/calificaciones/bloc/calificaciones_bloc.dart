@@ -23,7 +23,7 @@ class CalificacionesBloc
           .collection("usuarios")
           .doc(_auth.currentUser.uid)
           .get();
-      List<dynamic> clasesIds = myUserDoc.data()["clases"];
+      List<dynamic> clasesIds = myUserDoc.data()["clases"]??[];
       List<Map<String, dynamic>> calificaciones = [];
 
       for (var element in clasesIds) {

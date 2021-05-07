@@ -45,7 +45,7 @@ class TareasclasesBloc extends Bloc<TareasclasesEvent, TareasclasesState> {
       var clasesCollection = FirebaseFirestore.instance.collection("clases");
       var tareasCollection = FirebaseFirestore.instance.collection("tareas");
       Map<DateTime, List<dynamic>> events = {};
-      List<dynamic> clasesIds = myUserDoc.data()["clases"];
+      List<dynamic> clasesIds = myUserDoc.data()["clases"] ?? [];
       List<Map<String, dynamic>> clases = [];
       List<Map<String, dynamic>> tareas = [];
 

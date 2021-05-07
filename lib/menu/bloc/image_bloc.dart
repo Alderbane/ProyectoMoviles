@@ -27,11 +27,11 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
   Stream<ImageState> mapEventToState(
     ImageEvent event,
   ) async* {
-    if(event is GetImageEvent){
+    if (event is GetImageEvent) {
       String img;
       img = await downloadFile();
-    yield ImageUpdatedState(image: img);
-    }else if(event is ChangeImageEvent){
+      yield ImageUpdatedState(image: img);
+    } else if (event is ChangeImageEvent) {
       String imgURL;
       File img = await _pickImage();
       await uploadFile(img);
@@ -41,17 +41,16 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
   }
 }
 
-
- Future<File> _pickImage() async {
-    final picker = ImagePicker();
-    final PickedFile chosenImage = await picker.getImage(
-      source: ImageSource.camera,
-      maxHeight: 720,
-      maxWidth: 720,
-      imageQuality: 85,
-    );
-    return File(chosenImage.path);
-  }
+Future<File> _pickImage() async {
+  final picker = ImagePicker();
+  final PickedFile chosenImage = await picker.getImage(
+    source: ImageSource.camera,
+    maxHeight: 720,
+    maxWidth: 720,
+    imageQuality: 85,
+  );
+  return File(chosenImage.path);
+}
 
 Future<void> uploadFile(File file) async {
   try {
@@ -63,16 +62,23 @@ Future<void> uploadFile(File file) async {
   }
 }
 
-
 Future<String> downloadFile() async {
   String img;
   try {
     print(FirebaseAuth.instance.currentUser.uid);
-    img = await firebase_storage.FirebaseStorage.instance
-        .ref('${FirebaseAuth.instance.currentUser.uid}/avatar.jpg').getDownloadURL();
-      return img;
+    var temp = firebase_storage.FirebaseStorage.instance
+        .ref('${FirebaseAuth.instance.currentUser.uid}/avatar.jpg');
+    // print(await temp.listAll());
+    await temp.getDownloadURL().then((value) {
+      img = value;
+    }, onError: (value) {
+      img = null;
+    });
+    return img;
   } on firebase_core.FirebaseException catch (e) {
     return null;
     // e.g, e.code == 'canceled'
+  } catch (e) {
+    return null;
   }
 }

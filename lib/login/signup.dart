@@ -1,8 +1,10 @@
+import 'package:calendario/auth/bloc/auth_bloc.dart';
 import 'package:calendario/auth/user_auth_provider.dart';
 import 'package:calendario/calendar/home_page.dart';
 import 'package:calendario/login/signin.dart';
 // import 'package:calendario/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -205,23 +207,28 @@ class _SignupState extends State<Signup> {
                                   content: Text("Cargando..."),
                                 ),
                               );
-                            try {
-                              await UserAuthProvider().emailSignUp(
-                                  _nameController.text,
-                                  _emailController.text,
-                                  _pwdController.text);
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (_) => HomePage()), (route) => false);
-                            } catch (e) {
-                              print(e.toString());
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(
-                                  SnackBar(
-                                    content: Text("Datos incorrectos"),
-                                  ),
-                                );
-                            }
+                            BlocProvider.of<AuthBloc>(context).add(
+                                SignUpAuthenticationEvent(
+                                    password: _pwdController.text,
+                                    user: _emailController.text,
+                                    nombre: _nameController.text));
+                            // try {
+                            //   await UserAuthProvider().emailSignUp(
+                            //       _nameController.text,
+                            //       _emailController.text,
+                            //       _pwdController.text);
+                            //   Navigator.of(context).pushAndRemoveUntil(
+                            //       MaterialPageRoute(builder: (_) => HomePage()), (route) => false);
+                            // } catch (e) {
+                            //   print(e.toString());
+                            //   ScaffoldMessenger.of(context)
+                            //     ..hideCurrentSnackBar()
+                            //     ..showSnackBar(
+                            //       SnackBar(
+                            //         content: Text("Datos incorrectos"),
+                            //       ),
+                            //     );
+                            // }
                             // _loginBloc.add(SignUpEvent(
                             //     name: _nameController.text,
                             //     email: _emailController.text,
@@ -246,8 +253,8 @@ class _SignupState extends State<Signup> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context)
-                                  .pushReplacement(MaterialPageRoute(builder: (_) => Signin()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (_) => Signin()));
                             },
                             child: Text(
                               'INGRESA',

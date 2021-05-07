@@ -22,11 +22,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   // }
   // // CalendarBloc(){};
   // CalendarBloc._internal() : super(CalendarInitial());
-  
 
   var _calendarDB = FirebaseFirestore.instance;
 
-  var _id = (FirebaseAuth.instance.currentUser!=null)?FirebaseAuth.instance.currentUser.uid:"nouid";
+  var _id = (FirebaseAuth.instance.currentUser != null)
+      ? FirebaseAuth.instance.currentUser.uid
+      : "nouid";
   Box _calendarBox = Hive.box("CalendarEvents");
   // int _eventId = 0;
   CalendarBloc() : super(CalendarInitial());
@@ -106,7 +107,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           .collection("usuarios")
           .doc(_id)
           .get();
-      List<dynamic> clasesIds = myUserDoc.data()["clases"];
+      List<dynamic> clasesIds = myUserDoc.data()["clases"] ?? [];
       for (var item in clasesIds) {
         var tareasOfItem =
             await tareasCollection.where("claseid", isEqualTo: item).get();

@@ -38,3 +38,12 @@ class GoToCalendarioEvent extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+class SignUpAuthenticationEvent extends AuthEvent {
+  final String user;
+  final String password;
+  final String nombre;
+  SignUpAuthenticationEvent({@required this.user,@required this.password, @required this.nombre});
+  @override
+  List<Object> get props => [user,password, nombre];
+}

@@ -31,19 +31,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AlreadyAuthState();
       else
         yield UnAuthState();
-    }
-    else if(event is SignOutAuthenticationEvent) {
+    } else if (event is SignOutAuthenticationEvent) {
       await _authProvider.signOut();
       yield UnAuthState();
-    }else if(event is SignInAuthenticationEvent){
+    } else if (event is SignInAuthenticationEvent) {
       await UserAuthProvider().emailSignIn(event.user, event.password);
       yield AlreadyAuthState();
-    }else if(event is GoToCalendarioEvent){
+    } else if (event is GoToCalendarioEvent) {
       yield GoToCalendarioState();
-    }else if(event is GoToCalificacionesEvent){
+    } else if (event is GoToCalificacionesEvent) {
       yield GoToCalificacionesState();
-    }else if(event is GoToClasesEvent){
+    } else if (event is GoToClasesEvent) {
       yield GoToClasesState();
+    } else if (event is SignUpAuthenticationEvent) {
+      await UserAuthProvider()
+          .emailSignUp(event.nombre, event.user, event.password);
+      yield AlreadyAuthState();
     }
   }
 }
